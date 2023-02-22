@@ -1,5 +1,6 @@
 const HttpError = require('../models/http-error')
 
+
 const TESTISARJAT = [
     {
         "id": 1,
@@ -24,7 +25,13 @@ const TESTISARJAT = [
     }
 ]
 
-const getAllsarjat = (req, res, next) => {
+const getAllsarjat = async (req, res, next) => {
+    let sarjat;
+    try {
+        sarjat = await Sarjat.find();
+    } catch (err) {
+        
+    }
     console.log('GET request in sarjat');
     res.json(TESTISARJAT);
 }
