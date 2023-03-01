@@ -6,15 +6,20 @@ import '@fontsource/roboto/700.css';
 
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
-import Homepage from "components/Homepage";
-import Demo from "components/Demo";
+import NavBar from "components/NavBar";
+import Arkisto from "pages/Arkisto";
+import Etusivu from "pages/Etusivu";
+import Lisaa from "pages/Lisaa";
+
 
 const App = () => {
     return (
         <div>
-            <Demo></Demo>
+            <NavBar></NavBar>
             <Routes>
-                <Route exact path="/" element={<Homepage />} />
+                <Route exact path="/" element={<Etusivu />} />
+                <Route path="/Arkisto" element={<Arkisto />} />
+                <Route path="/Lisaa" element={<Lisaa />} ></Route>
             </Routes>
         </div>
     );

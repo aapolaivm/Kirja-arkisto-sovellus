@@ -12,8 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link } from 'react-router-dom';
 
-const pages = ['Etusivu', 'Arkisto', 'Lisää/Muokkaa'];
+// const pages = ['Etusivu', 'Arkisto', 'Lisää/Muokkaa'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -22,6 +23,7 @@ function ResponsiveAppBar() {
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
+
     };
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -87,11 +89,15 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                        <MenuItem onClick={handleCloseNavMenu}>
+                            <Typography component={Link} to="/" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Etusivu</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleCloseNavMenu}>
+                            <Typography component={Link} to="/Arkisto" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Arkisto</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleCloseNavMenu}>
+                            <Typography component={Link} to="/Lisaa" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Lisaa/Muokkaa</Typography>
+                        </MenuItem>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -99,7 +105,7 @@ function ResponsiveAppBar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href=""
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
@@ -114,15 +120,30 @@ function ResponsiveAppBar() {
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
+                        <Button
                                 onClick={handleCloseNavMenu}
+                                component={Link}
+                                to="/"
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
-                            </Button>
-                        ))}
+                                Etusivu
+                        </Button>
+                        <Button
+                                onClick={handleCloseNavMenu}
+                                component={Link}
+                                to="/Arkisto"
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Arkisto
+                        </Button>
+                        <Button
+                                onClick={handleCloseNavMenu}
+                                component={Link}
+                                to="/Lisaa"
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Lisää/Muokkaa
+                        </Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
