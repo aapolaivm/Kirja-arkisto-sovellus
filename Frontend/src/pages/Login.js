@@ -36,7 +36,7 @@ const Login = () =>{
               id="password"
               autoComplete="current-password"
             />
-        <Button component={Link} to ="/Etusivu">Kirjaudu</Button>
+        <Button component={Link} to ="/">Kirjaudu</Button>
     </div>)
     
 }
