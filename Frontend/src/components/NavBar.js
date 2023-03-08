@@ -169,7 +169,7 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography component={Link} to="/Login" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Kirjaudu ulos </Typography>
+                                <Typography component={Link} to="/Login" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Kirjaudu sisään </Typography>
                             </MenuItem>
                         
                             {settings.map((setting) => (
