@@ -12,6 +12,7 @@ import NavBar from "components/NavBar";
 import Arkisto from "pages/Arkisto";
 import Etusivu from "pages/Etusivu";
 import Lisaa from "pages/Lisaa";
+import SignUp from "pages/Register";
 
 const App = () => {
     return (
@@ -21,7 +22,7 @@ const App = () => {
             <Container>
                 <Routes>
                 <Route path="/Login" element={<Login/>}/>
-                {/* <Route path="/Register" element={<SignUp/>}/> */}
+                { <Route path="/Register" element={<SignUp/>}/> }
                 <Route exact path="/" element={<Etusivu />} />
                 <Route path="/Arkisto" element={<Arkisto />} />
                 <Route path="/Lisaa" element={<Lisaa />} ></Route>
