@@ -8,11 +8,10 @@ import Container from "components/Container"
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
 import Login from "pages/Login";
-import NavBar from "components/NavBar";
+//import NavBar from "components/NavBar";
 import Arkisto from "pages/Arkisto";
 import Etusivu from "pages/Etusivu";
 import Lisaa from "pages/Lisaa";
-
 
 const App = () => {
     return (
@@ -22,6 +21,7 @@ const App = () => {
             <Container>
                 <Routes>
                 <Route path="/Login" element={<Login/>}/>
+                <Route path="/Register" element={<SignUp/>}/>
                 <Route exact path="/" element={<Etusivu />} />
                 <Route path="/Arkisto" element={<Arkisto />} />
                 <Route path="/Lisaa" element={<Lisaa />} ></Route>

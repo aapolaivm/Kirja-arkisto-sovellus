@@ -4,8 +4,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 //import Link from '@mui/material/Link';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -22,34 +20,10 @@ const Login = () => {
 
   const handleButtonClick = () => {};
 
+ 
+
   return (
-    /*<div>
-        <Typography component="h1" variant="h5">
-            Kirjaudu sisään
-          </Typography>
-        <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-        <Button component={Link} to ="/">Kirjaudu</Button>
-    </div>
-    */
+
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -72,10 +46,10 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -97,11 +71,11 @@ const Login = () => {
             >
               Kirjaudu sisään
             </Button>
-            <Grid container>
+           <Grid container>
               <Grid item xs></Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="#" variant="body2" to="/Register">
+                  {"Rekisteröidy"}
                 </Link>
               </Grid>
             </Grid>
@@ -109,6 +83,7 @@ const Login = () => {
         </Box>
       </Container>
     </ThemeProvider>
+
   );
 };
 
