@@ -13,6 +13,7 @@ import Arkisto from "pages/Arkisto";
 import Etusivu from "pages/Etusivu";
 import Lisaa from "pages/Lisaa";
 import SignUp from "pages/Register";
+import OmaKokoelma from "pages/OmaKokoelma";
 
 const App = () => {
     return (
@@ -26,6 +27,7 @@ const App = () => {
                 <Route exact path="/" element={<Etusivu />} />
                 <Route path="/Arkisto" element={<Arkisto />} />
                 <Route path="/Lisaa" element={<Lisaa />} ></Route>
+                <Route path="/OmaKokoelma" element={<OmaKokoelma/>} ></Route>
             </Routes>
             </Container>
         </div>

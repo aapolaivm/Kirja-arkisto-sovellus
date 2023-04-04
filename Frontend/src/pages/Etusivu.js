@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button";
-import NavBar from "components/NavBar";
 
 export default function Etusivu() {
   return (

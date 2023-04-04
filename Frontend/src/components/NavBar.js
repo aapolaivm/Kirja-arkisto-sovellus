@@ -98,6 +98,9 @@ function ResponsiveAppBar() {
                         <MenuItem onClick={handleCloseNavMenu}>
                             <Typography component={Link} to="/Lisaa" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Lisaa/Muokkaa</Typography>
                         </MenuItem>
+                        <MenuItem onClick={handleCloseNavMenu}>
+                            <Typography component={Link} to="/OmaKokoelma" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Oma Kokoelma</Typography>
+                        </MenuItem>
                         </Menu>
                     </Box>
                     <AutoStoriesIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -143,6 +146,14 @@ function ResponsiveAppBar() {
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Lisää/Muokkaa
+                        </Button>
+                        <Button
+                                onClick={handleCloseNavMenu}
+                                component={Link}
+                                to="/OmaKokoelma"
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Oma kokoelma
                         </Button>
                     </Box>
 
