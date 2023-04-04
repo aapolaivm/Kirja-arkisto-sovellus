@@ -8,13 +8,13 @@ const columns = [
     {
         field: 'sarjannimi',
         headerName: 'Nimi',
-        width: 200,
+        width: 150,
         editable: false
     },
     {
         field: 'ilmestymisvuodet',
-        headerName: 'Ilmestymisvuodet',
-        width: 140,
+        headerName: 'Vuosi',
+        width: 100,
         editable: false,
 
         valueGetter: (params) =>
@@ -22,8 +22,8 @@ const columns = [
     },
     {
         field: 'kpl',
-        headerName: 'Kappalemäärä',
-        width: 150,
+        headerName: 'Kappaleita',
+        width: 100,
         editable: false
     }
 ];
@@ -31,7 +31,7 @@ const columns = [
 const rows = [
     { id: 2, sarjannimi: 'Aku Ankka', ekavuosi: 1971, vikavuosi: 1987, kpl: 189 },
     { id: 3, sarjannimi: 'Aku Ankka', ekavuosi: 1971, vikavuosi: '', kpl: 0 },
-    { id: 5, sarjannimi: 'Aku Ankka', ekavuosi: 1971, vikavuosi: 1987 , kpl: 123}
+    { id: 5, sarjannimi: 'Aku Ankan taskukirjakokoelma', ekavuosi: 1971, vikavuosi: 1987 , kpl: 123}
 ];
 
 export default function DataGridDemo(){
@@ -41,8 +41,6 @@ export default function DataGridDemo(){
             <DataGrid
                 rows={rows}
                 columns={columns}
-                useStyles
-                disableCellFocusOutline
                 initialState={{
                     pagination: {
                         paginationModel: {
@@ -52,9 +50,6 @@ export default function DataGridDemo(){
                 }}
                 pageSizeOptions={[20]}
                 hideFooterSelectedRowCount
-                showCellVerticalBorder={false}
-            //checkboxSelection
-            //disableRowSelectionOnClick
             />
         </Box>
     );
