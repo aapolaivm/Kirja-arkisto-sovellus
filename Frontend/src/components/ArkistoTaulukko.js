@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { DataGrid } from '@mui/x-data-grid';
+import { Button } from '@mui/material';
 
 const columns = [
     {field: 'id', headerName: 'ID', width: 0},
@@ -15,9 +16,22 @@ const columns = [
   { field: 'kategoria', headerName: 'Kategoria', width: 130, flex: 1 },
   { field: 'kustantaja', headerName: 'Kustantaja', width: 130, flex: 1 },
   { field: 'kirjailija', headerName: 'Kirjailija', width: 130, flex: 1 },
-  { field: 'julkaisuvuosi', headerName: 'Julkaisuvuosi', width: 130, flex: 1 }
-
-    
+  { field: 'julkaisuvuosi', headerName: 'Julkaisuvuosi', width: 130, flex: 1 },
+  {    
+    renderCell: (cellValues) => {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={(event) => {
+            //handleClick(event, cellValues);
+          }}
+        >
+          Muokkaa
+        </Button>
+      );
+    }
+  }
 ];
 
 const rows = [  
