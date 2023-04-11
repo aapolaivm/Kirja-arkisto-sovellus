@@ -14,10 +14,13 @@ import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 
 export default function LisaaForm() {
   const [julkaisuvuosi, setJulkaisuvuosi] = useState(new Date())
+  const [navigate, setNavigate] = useState(false)
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
@@ -29,8 +32,10 @@ export default function LisaaForm() {
       "takakansikuva":event.target.takakansikuva.value,
       "kunto":event.target.kunto.value,
       "hankintahinta":event.target.hankintahinta.value,
-      "kategoria":event.target.kategoria.value
+      "kategoria":event.target.kategoria.value,
+      "kustantaja":event.target.kustantaja.value
   }
+
     console.log(data)
     // alert
     const result = await fetch ("http://localhost:5000/api/kirjat", {
@@ -40,12 +45,14 @@ export default function LisaaForm() {
         'Content-Type': 'application/json'
       },
     })
+    setNavigate(true);
   }
   const updateJulkaisuvuosi = (date) => {
     setJulkaisuvuosi(date.year())
   }
     return (
         <React.Fragment>
+          {navigate && <Navigate to="/Arkisto" replace={true}></Navigate>}
             <CssBaseline />
             
       <Card>

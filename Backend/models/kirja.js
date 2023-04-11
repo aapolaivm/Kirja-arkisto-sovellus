@@ -19,6 +19,7 @@ const kirjaSchema = new Schema({
     kuvausteksti: {type: String, required: false},
     niteet: [nideSchema],
     kategoria: [kategoriaSchema],
+    kustantaja: {type: String, required: false},
     _id: {type:mongoose.Types.ObjectId}
 })
 

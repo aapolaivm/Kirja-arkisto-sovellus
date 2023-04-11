@@ -8,7 +8,7 @@ var moment = require('moment'); // require
 
 const createKirja = async (req, res, next) => {
     const {nimi, kirjailija, julkaisuvuosi, kuvausteksti, kunto, hankintahinta, kansikuva, takakansikuva,
-    kategoria} = req.body;
+    kategoria, kustantaja} = req.body;
     const kirjatkategoria = await Kategoria.findOneAndCreate({nimi:kategoria}, {nimi:kategoria})
     const newid = new mongoose.Types.ObjectId().toHexString();
     const createdKirja = new Kirja({
@@ -17,6 +17,7 @@ const createKirja = async (req, res, next) => {
         julkaisuvuosi: julkaisuvuosi,
         kuvausteksti: kuvausteksti,
         kategoria: [kirjatkategoria],
+        kustantaja: kustantaja,
         _id: newid
     });
     const createdNide = new Nide({kunto, hankintahinta, kansikuva, takakansikuva})
@@ -121,7 +122,10 @@ const getAllKirjat = async (req, res, next) => {
         return next(error);
     }
     kirjat = kirjat.map(kirja => {
-        return {...kirja, julkaisuvuosi:moment(kirja.julkaisuvuosi).format("YYYY")}
+        return {...kirja, 
+            julkaisuvuosi: moment(kirja.julkaisuvuosi).format("YYYY"),
+            kategoria: kirja?.kategoria?.map(k => k.nimi).join(', ')??''
+        }
     })
     res.json(kirjat);
 };

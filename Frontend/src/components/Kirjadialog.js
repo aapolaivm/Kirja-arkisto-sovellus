@@ -23,6 +23,11 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       return
     }
     fetch(`http://localhost:5000/api/kirjat/${kirjaID}`)
+    .then(r => r.json())
+    .then(d => {
+      console.log(d)
+      setKirjaData(d.kirja)
+    })
   },[kirjaID])
 
   return (
@@ -37,23 +42,25 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
         <DialogTitle>{"Kirja"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Nimi
+            {kirjaData?.nimi}
           </DialogContentText>
           <TextField
         type="text"
         id="outlined-basic"
         label="Kuvaus"
-        variant="outlined"        
+        variant="outlined"
+        value={kirjaData?.kuvausteksti ?? 'Ei kuvausta'}      
         inputProps={{
             readOnly:true,
           style: {
-            height: "100px"
+            height: "100px",
+            width: "500px"
           }
         }}
       />
       <br></br>
       Ostohinta
-      <TextField fullWidth label="" id="ostohinta" inputProps={{readOnly:true}} />
+      <TextField fullWidth label="" id="ostohinta" value={`${kirjaData?.niteet?.[0]?.hankintahinta??0} €`} inputProps={{readOnly:true}} />
       <img
       style={{ maxWidth: 200, margin: 15 }}
       src="https://images.unsplash.com/photo-1565992441121-4367c2967103"

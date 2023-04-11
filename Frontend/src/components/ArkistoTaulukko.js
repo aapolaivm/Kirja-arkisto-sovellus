@@ -23,7 +23,9 @@ export default function DataTable({openDialog}) {
   { field: 'kustantaja', headerName: 'Kustantaja', width: 130, flex: 1 },
   { field: 'kirjailija', headerName: 'Kirjailija', width: 130, flex: 1 },
   { field: 'julkaisuvuosi', headerName: 'Julkaisuvuosi', width: 130, flex: 1 },
-  {    
+  { 
+    field: "Edit",
+    headerName: "Action",
     renderCell: (cellValues) => {
       return (
         <Button
@@ -34,7 +36,29 @@ export default function DataTable({openDialog}) {
             openDialog(cellValues.id)
           }}
         >
-          Muokkaa
+          Näytä
+        </Button>
+      );
+    }
+  },
+  {    
+    field:"Delete",
+    headerName: "Action",
+
+    renderCell: (cellValues) => {
+      return (
+        <Button
+          variant="contained"
+          color="error"
+          onClick={(event) => {
+            fetch(`http://localhost:5000/api/kirjat/${cellValues.id}`, {method:'Delete'})
+            .then(r => r.json())
+            .then(d => {
+            setFetchKirjat(numero => numero+1)
+            })
+          }}
+        >
+          Poista
         </Button>
       );
     }
@@ -47,20 +71,25 @@ export default function DataTable({openDialog}) {
     //  {id: 4, nimi:'Kotkanpesä', kategoria: 'Jännitys', kustantaja: 'Wsoy', kirjailija: 'Ilkka Remes', julkaisuvuosi: 2020},
     //  {id: 5, nimi:'Tintti Amerikassa', kategoria: 'Sarjakuva', kustantaja: 'Otava', kirjailija: 'Hergé', julkaisuvuosi: 2017},
   ])
+  const [fetchKirjat, setFetchKirjat] = useState(0)
+
   useEffect(()=> {
     fetch("http://localhost:5000/api/kirjat").then(r => r.json()).then(data => {
       console.table(data);
       setRows(data)
     })   
-    },[])
+    },[fetchKirjat])
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 1000, width: '100%' }}>
       <DataGrid
       getRowId={row=>row._id}
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
+        columnVisibilityModel={{
+          id:false
+        }}
         //checkboxSelection
         
       />
