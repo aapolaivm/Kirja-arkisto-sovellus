@@ -9,10 +9,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-const columns = [
+
+  // const rows = ;
+
+export default function DataTable({openDialog}) {
+  const columns = [
     {field: 'id', headerName: 'ID', width: 0},
-  { field: 'nimi', headerName: 'Nimi', width: 200, flex: 1 },
+  { field: 'nimi', headerName: 'Nimi', width: 200, flex: 1},
   { field: 'kategoria', headerName: 'Kategoria', width: 130, flex: 1 },
   { field: 'kustantaja', headerName: 'Kustantaja', width: 130, flex: 1 },
   { field: 'kirjailija', headerName: 'Kirjailija', width: 130, flex: 1 },
@@ -25,6 +31,7 @@ const columns = [
           color="primary"
           onClick={(event) => {
             //handleClick(event, cellValues);
+            openDialog(cellValues.id)
           }}
         >
           Muokkaa
@@ -33,24 +40,29 @@ const columns = [
     }
   }
 ];
-
-const rows = [  
-  {id: 1, nimi:'Aku Ankka', kategoria: 'Sarjakuva', kustantaja: 'Sanoma Media Finland', kirjailija: 'Carl Barks', julkaisuvuosi: 2023},
-   {id: 2, nimi:'Taru Sormusten Herrasta', kategoria: 'Fantasia', kustantaja: 'Allen & Unwin', kirjailija: 'J.R.R. Tolkien', julkaisuvuosi: 1955},
-   {id: 3, nimi:'Witcher', kategoria: 'Fantasia', kustantaja: 'Wsoy', kirjailija: 'Andrzej Sapkowski', julkaisuvuosi: 1986},
-   {id: 4, nimi:'Kotkanpesä', kategoria: 'Jännitys', kustantaja: 'Wsoy', kirjailija: 'Ilkka Remes', julkaisuvuosi: 2020},
-   {id: 5, nimi:'Tintti Amerikassa', kategoria: 'Sarjakuva', kustantaja: 'Otava', kirjailija: 'Hergé', julkaisuvuosi: 2017},
-];
-
-export default function DataTable() {
+  const [rows, setRows] = useState([
+    // {id: 1, nimi:'Aku Ankka', kategoria: 'Sarjakuva', kustantaja: 'Sanoma Media Finland', kirjailija: 'Carl Barks', julkaisuvuosi: 2023},
+    //  {id: 2, nimi:'Taru Sormusten Herrasta', kategoria: 'Fantasia', kustantaja: 'Allen & Unwin', kirjailija: 'J.R.R. Tolkien', julkaisuvuosi: 1955},
+    //  {id: 3, nimi:'Witcher', kategoria: 'Fantasia', kustantaja: 'Wsoy', kirjailija: 'Andrzej Sapkowski', julkaisuvuosi: 1986},
+    //  {id: 4, nimi:'Kotkanpesä', kategoria: 'Jännitys', kustantaja: 'Wsoy', kirjailija: 'Ilkka Remes', julkaisuvuosi: 2020},
+    //  {id: 5, nimi:'Tintti Amerikassa', kategoria: 'Sarjakuva', kustantaja: 'Otava', kirjailija: 'Hergé', julkaisuvuosi: 2017},
+  ])
+  useEffect(()=> {
+    fetch("http://localhost:5000/api/kirjat").then(r => r.json()).then(data => {
+      console.table(data);
+      setRows(data)
+    })   
+    },[])
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
+      getRowId={row=>row._id}
         rows={rows}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
+        //checkboxSelection
+        
       />
     </div>
   );

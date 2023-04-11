@@ -22,9 +22,36 @@ const kirjaSchema = new Schema({
     _id: {type:mongoose.Types.ObjectId}
 })
 
-module.exports = mongoose.model('Kirja', kirjaSchema);
-module.exports = mongoose.model('Kategoria', kategoriaSchema);
-module.exports = mongoose.model('Nide', nideSchema);
+kategoriaSchema.statics.findOneAndCreate = function
+findOneAndCreate(condition, doc){
+    const self = this;
+    const newDocument = doc;
+    return new Promise((resolve, reject) => {
+        return self.findOne(condition)
+        .then((result) => {
+            if (result) {
+                return resolve(result);
+            }
+                return self.create(newDocument)
+            .then((result) => {
+                return resolve(result);
+            }).catch((error) => {
+                return reject(error);
+            })
+        }).catch((error) => {
+            return reject(error);
+        })
+    });   
+}
+
+// module.exports = mongoose.model('Kirja', kirjaSchema);
+// module.exports = mongoose.model('Kategoria', kategoriaSchema);
+// module.exports = mongoose.model('Nide', nideSchema);
+module.exports = {
+    Kirja:mongoose.model('Kirja', kirjaSchema),
+    Kategoria:mongoose.model('Kategoria', kategoriaSchema),
+    Nide:mongoose.model('Nide', nideSchema)
+}
 
 /*
     sarja: {type: Number, required: false},    

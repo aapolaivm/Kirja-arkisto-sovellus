@@ -15,7 +15,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link } from 'react-router-dom';
 
 // const pages = ['Etusivu', 'Arkisto', 'Lisää/Muokkaa'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Kokoelma', 'Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

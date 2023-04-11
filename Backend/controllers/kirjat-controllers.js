@@ -1,24 +1,35 @@
 const HttpError = require('../models/http-error');
-const Kirja = require('../models/kirja');
+const {Kirja} = require('../models/kirja');
+const {Nide} = require('../models/kirja');
+const {Kategoria} = require('../models/kirja');
 const mongoose = require('mongoose');
+var moment = require('moment'); // require
+
 
 const createKirja = async (req, res, next) => {
-    const {nimi, kirjailija, julkaisuvuosi, kuvausteksti} = req.body;
+    const {nimi, kirjailija, julkaisuvuosi, kuvausteksti, kunto, hankintahinta, kansikuva, takakansikuva,
+    kategoria} = req.body;
+    const kirjatkategoria = await Kategoria.findOneAndCreate({nimi:kategoria}, {nimi:kategoria})
     const newid = new mongoose.Types.ObjectId().toHexString();
     const createdKirja = new Kirja({
         nimi: nimi,
         kirjailija: kirjailija,
         julkaisuvuosi: julkaisuvuosi,
         kuvausteksti: kuvausteksti,
+        kategoria: [kirjatkategoria],
         _id: newid
     });
+    const createdNide = new Nide({kunto, hankintahinta, kansikuva, takakansikuva})
+    createdKirja.niteet = [createdNide]
     try {
+        await createdNide.save();
         await createdKirja.save();
     } catch (err) {
         const error = new HttpError(
             'Kirjan luonti epäonnistui, kokeile uudelleen!',
             500
         );
+        console.log(err)
         return next(error);
     }
     res
@@ -96,7 +107,7 @@ const deleteKirjaById = async (req, res, next) => {
 const getAllKirjat = async (req, res, next) => {
     let kirjat;
     try {
-        kirjat = await Kirja.find();
+        kirjat = await Kirja.find().lean();
     } catch (err) {
         const error = new HttpError(
             'Jokin meni vikaan, kirjoja ei onnistuttu saamaan', 500
@@ -109,6 +120,9 @@ const getAllKirjat = async (req, res, next) => {
         );
         return next(error);
     }
+    kirjat = kirjat.map(kirja => {
+        return {...kirja, julkaisuvuosi:moment(kirja.julkaisuvuosi).format("YYYY")}
+    })
     res.json(kirjat);
 };
 
@@ -119,7 +133,7 @@ const getKirjaById = async (req, res, next) => {
     try {
         kirja = await Kirja.findById(kirjaId);
     } catch (err) {
-        const error = HttpError(
+        const error = new HttpError(
             'Jokin meni vikaan, kirjoja ei onnistuttu saamaan', 500
 
         );
