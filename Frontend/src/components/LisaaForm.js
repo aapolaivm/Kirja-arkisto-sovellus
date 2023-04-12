@@ -13,13 +13,17 @@ import { YearCalendar } from '@mui/x-date-pickers/YearCalendar';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import KategoriaSelect from './Kategoriaselect';
 
 
 export default function LisaaForm() {
   const [julkaisuvuosi, setJulkaisuvuosi] = useState(new Date())
   const [navigate, setNavigate] = useState(false)
+
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,6 +54,7 @@ export default function LisaaForm() {
   const updateJulkaisuvuosi = (date) => {
     setJulkaisuvuosi(date.year())
   }
+
     return (
         <React.Fragment>
           {navigate && <Navigate to="/Arkisto" replace={true}></Navigate>}
@@ -67,7 +72,8 @@ export default function LisaaForm() {
         <br></br>
         <TextField id="outlined-basic" name='nimi' label="Nimi" variant="outlined" />
         <br></br>
-        <TextField id="outlined-basic" name='kategoria' label="Kategoria" variant="outlined" />
+        {/* <TextField id="outlined-basic" name='kategoria' label="Kategoria" variant="outlined" /> */}
+        <KategoriaSelect ></KategoriaSelect>
         <br></br>
         <TextField id="outlined-basic" name='kustantaja' label="Kustantaja" variant="outlined" />
         <br></br>

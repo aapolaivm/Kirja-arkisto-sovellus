@@ -151,6 +151,10 @@ const getKirjaById = async (req, res, next) => {
     }
     res.json({kirja: kirja.toObject()});
 ;}
+const getKategoriat = async (req, res, next) => {
+    const kategoriat = await Kategoria.find({}).lean()
+    res.json({kategoriat})
+}
 
 
 exports.createKirja = createKirja;
@@ -158,4 +162,5 @@ exports.updateKirjabyId = updateKirjabyId;
 exports.deleteKirjaById = deleteKirjaById;
 exports.getAllKirjat = getAllKirjat;
 exports.getKirjaById = getKirjaById;
+exports.getKategoriat = getKategoriat;
 

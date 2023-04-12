@@ -7,6 +7,7 @@ const kirjatControllers = require('../controllers/kirjat-controllers')
 
 const router = express.Router();
 
+router.get('/kategoria', kirjatControllers.getKategoriat)
 
 router.get('/', kirjatControllers.getAllKirjat);
 
@@ -17,5 +18,6 @@ router.post('/', kirjatControllers.createKirja);
 router.patch('/:_id', kirjatControllers.updateKirjabyId);
 
 router.delete('/:_id', kirjatControllers.deleteKirjaById);
+
 
 module.exports = router;
