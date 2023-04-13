@@ -15,7 +15,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Link } from 'react-router-dom';
 
 // const pages = ['Etusivu', 'Arkisto', 'Lisää/Muokkaa'];
-const settings = ['Kokoelma', 'Logout'];
+const settings = ['Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -96,10 +96,10 @@ function ResponsiveAppBar() {
                             <Typography component={Link} to="/Arkisto" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Arkisto</Typography>
                         </MenuItem>
                         <MenuItem onClick={handleCloseNavMenu}>
-                            <Typography component={Link} to="/Lisaa" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Lisaa/Muokkaa</Typography>
+                            <Typography component={Link} to="/Lisaa" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Lisää/Muokkaa</Typography>
                         </MenuItem>
                         <MenuItem onClick={handleCloseNavMenu}>
-                            <Typography component={Link} to="/OmaKokoelma" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Oma Kokoelma</Typography>
+                            <Typography component={Link} to="/OmaKokoelma" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Oma kirjasto</Typography>
                         </MenuItem>
                         </Menu>
                     </Box>
@@ -153,7 +153,7 @@ function ResponsiveAppBar() {
                                 to="/OmaKokoelma"
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                Oma kokoelma
+                                Oma kirjasto
                         </Button>
                     </Box>
 
@@ -181,6 +181,9 @@ function ResponsiveAppBar() {
                         >
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography component={Link} to="/Login" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Kirjaudu sisään </Typography>
+                            </MenuItem>
+                            <MenuItem onClick={handleCloseUserMenu}>
+                                <Typography component={Link} to="/OmaKokoelma" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Oma Kirjasto </Typography>
                             </MenuItem>
                         
                             {settings.map((setting) => (
