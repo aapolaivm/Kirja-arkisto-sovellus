@@ -5,7 +5,7 @@ import ListaKirjoista from "components/SarjanKirjatTaulukko"
 import { useEffect } from 'react';
 
 
-export default function DataGridDemo() {
+export default function DataGridDemo({fetchSarjat}) {
 
     const columns = [
         { field: 'nimi', headerName: 'Nimi', width: 150, editable: false },
@@ -26,7 +26,6 @@ export default function DataGridDemo() {
 
 */
 
-    const [fetchSarjat] = useState(0)
 
     useEffect(() => {
         fetch("http://localhost:5000/api/Sarjat").then(r => r.json()).then(data => {
