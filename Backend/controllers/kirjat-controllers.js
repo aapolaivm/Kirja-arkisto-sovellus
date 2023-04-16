@@ -4,27 +4,67 @@ const {Nide} = require('../models/kirja');
 const {Kategoria} = require('../models/kirja');
 const mongoose = require('mongoose');
 var moment = require('moment'); // require
+const uuid = require('uuid');
+const { Kuva } = require('../models/kuva');
 
+async function createKuva(file){
+    try {
+        const kuva = new Kuva({
+            nimi: uuid.v4(),
+            data: file.buffer,
+            mimetype: file.mimetype
+        }) 
+        await kuva.save()
+        return kuva
+    } catch (error) {
+        console.error(error)
+        return null
+    }
+    
+}
 
 const createKirja = async (req, res, next) => {
-    const {nimi, kirjailija, julkaisuvuosi, kuvausteksti, kunto, hankintahinta, kansikuva, takakansikuva,
+    // req.files['etukansikuva'][0]
+    // req.files['takakansikuva'][0]
+    // req.files['muutkuvat']
+    const {nimi, kirjailija, julkaisuvuosi, kuvausteksti, kunto, hankintahinta,
     kategoria, kustantaja} = req.body;
-    const kirjatkategoria = await Kategoria.findOneAndCreate({nimi:kategoria}, {nimi:kategoria})
+    // const kirjatkategoria = await Kategoria.findOneAndCreate({nimi:kategoria}, {nimi:kategoria})
     const newid = new mongoose.Types.ObjectId().toHexString();
     const createdKirja = new Kirja({
         nimi: nimi,
         kirjailija: kirjailija,
         julkaisuvuosi: julkaisuvuosi,
         kuvausteksti: kuvausteksti,
-        kategoria: [kirjatkategoria],
+        // kategoria: [kirjatkategoria],
         kustantaja: kustantaja,
         _id: newid
     });
-    const createdNide = new Nide({kunto, hankintahinta, kansikuva, takakansikuva})
+
+    const kategoriat = kategoria.split('|').map(nimi => {
+        return Kategoria.findOneAndCreate({nimi}, {nimi})
+    })
+    createdKirja.kategoria = await Promise.all(kategoriat)
+
+    const createdNide = new Nide({kunto, hankintahinta})
     createdKirja.niteet = [createdNide]
+    if (req.files['etukansikuva']){
+        const etukansikuva = await createKuva(req.files['etukansikuva'][0])
+        createdNide.etukansikuva = etukansikuva
+    }
+    if (req.files['takakansikuva']){
+        const takakansikuva = await createKuva(req.files['takakansikuva'][0])
+        createdNide.takakansikuva = takakansikuva
+    }
+    if (req.files['muutkuvat']){
+        // array of promises
+        const muutkuvat = req.files['muutkuvat'].map(kuva => createKuva(kuva))
+        createdNide.muutkuvat = await Promise.all(muutkuvat)
+    }
     try {
         await createdNide.save();
         await createdKirja.save();
+        console.log(createdNide.etukansikuva)
     } catch (err) {
         const error = new HttpError(
             'Kirjan luonti epäonnistui, kokeile uudelleen!',

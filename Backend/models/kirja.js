@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
+const { kuvaSchema } = require('./kuva');
 
 const Schema = mongoose.Schema;
 
 const nideSchema = new Schema({
     kunto: {type: String, required: true},
     hankintahinta: {type: Number, required: true},
-    kansikuva: {type: String, required: false},
-    takakansikuva: {type: String, required: false}
+    etukansikuva: {type: Schema.Types.ObjectId, ref:'Kuva'},
+    takakansikuva: {type: Schema.Types.ObjectId, ref:'Kuva'},
+    muutkuvat: [{type: Schema.Types.ObjectId, ref:'Kuva'}]
 })
 const kategoriaSchema = new Schema({
     nimi: {type: String, required: true}

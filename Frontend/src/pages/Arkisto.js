@@ -17,11 +17,11 @@ const Arkisto = () => {
     return (
         <>            
             <h1>Arkisto</h1>
-            <SearchBar></SearchBar>
+            {/* <SearchBar></SearchBar> */}
             <br></br>
             <Stack spacing={2} direction="row">      
-      <Button variant="contained">Etsi</Button>
-      <Button variant="contained">Tyhjennä</Button>
+      {/* <Button variant="contained">Etsi</Button>
+      <Button variant="contained">Tyhjennä</Button> */}
       
     </Stack>
             <br></br>

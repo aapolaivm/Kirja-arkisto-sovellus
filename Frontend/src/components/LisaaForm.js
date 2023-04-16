@@ -14,7 +14,7 @@ import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Form, Navigate } from 'react-router-dom';
 import KategoriaSelect from './Kategoriaselect';
 
 
@@ -27,27 +27,33 @@ export default function LisaaForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      "nimi":event.target.nimi.value,
-      "kirjailija":event.target.kirjailija.value,
-      "julkaisuvuosi":julkaisuvuosi,
-      "kuvausteksti":event.target.kuvausteksti.value,
-      "kansikuva":event.target.kansikuva.value,
-      "takakansikuva":event.target.takakansikuva.value,
-      "kunto":event.target.kunto.value,
-      "hankintahinta":event.target.hankintahinta.value,
-      "kategoria":event.target.kategoria.value,
-      "kustantaja":event.target.kustantaja.value
-  }
+  //   const data = {
+  //     "nimi":event.target.nimi.value,
+  //     "kirjailija":event.target.kirjailija.value,
+  //     "julkaisuvuosi":julkaisuvuosi,
+  //     "kuvausteksti":event.target.kuvausteksti.value,
+  //     "kansikuva":event.target.kansikuva.value,
+  //     "takakansikuva":event.target.takakansikuva.value,
+  //     "kunto":event.target.kunto.value,
+  //     "hankintahinta":event.target.hankintahinta.value,
+  //     "kategoria":event.target.kategoria.value,
+  //     "kustantaja":event.target.kustantaja.value
+  // }
+
+  const data = new FormData(event.target)
+  data.delete('kategoria')
+  data.append('kategoria', event.target.kategoria.value)
+  data.append('julkaisuvuosi', julkaisuvuosi)
 
     console.log(data)
     // alert
     const result = await fetch ("http://localhost:5000/api/kirjat", {
       method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      // body: JSON.stringify(data),
+      body: data,
+      // headers: {
+      //   'Content-Type': 'application/json'
+      // },
     })
     setNavigate(true);
   }
@@ -61,7 +67,7 @@ export default function LisaaForm() {
             <CssBaseline />
             
       <Card>
-      <Box onSubmit={handleSubmit}
+      <Box onSubmit={handleSubmit} enctype="multipart/form-data"
         component="form"
         sx={{ display: '-ms-grid', transform: 'scale(1)',
           '& > :not(style)': { m: 1, width: '25ch' },
@@ -110,7 +116,7 @@ export default function LisaaForm() {
   <input
     type="file"
     hidden
-    name='kansikuva'
+    name='etukansikuva'
   />
 </Button>
 <br></br>
@@ -133,6 +139,7 @@ export default function LisaaForm() {
   Lisää muita kuvia
   <input
     type="file"
+    multiple
     hidden
     name='muutkuvat'
   />
