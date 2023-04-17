@@ -61,11 +61,42 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       <br></br>
       Ostohinta
       <TextField fullWidth label="" id="ostohinta" value={`${kirjaData?.niteet?.[0]?.hankintahinta??0} €`} inputProps={{readOnly:true}} />
+      <br></br>
+      <br></br>
+      Kuntoluokka
+      <TextField fullWidth label="" id="Kuntoluokka" value={`${kirjaData?.niteet?.[0]?.kunto??0}`} inputProps={{readOnly:true}} />
+      <br></br>
+      <br></br>
+      Etukansikuva
+      <br></br>
       <img
       style={{ maxWidth: 200, margin: 15 }}
-      src="https://images.unsplash.com/photo-1565992441121-4367c2967103"
+      src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.niteet?.[0]?.etukansikuva?.nimi}`}
       alt="image"
     />
+    <br></br>
+    Takakansikuva
+    <br></br>
+    <img
+      style={{ maxWidth: 200, margin: 15 }}
+      src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.niteet?.[0]?.takakansikuva?.nimi}`}
+      alt="image"
+    />
+    <br></br>
+    Muut kuvat
+    <br></br>
+    {      
+      (kirjaData?.niteet?.[0]?.muutkuvat??[]).map(k => {
+        return (
+      <img
+      key={k.nimi}
+      style={{ maxWidth: 200, margin: 15 }}
+      src={`http://localhost:5000/api/kirjat/kuva/${k.nimi}`}
+      alt="image"
+      />
+        )      
+      })
+    }  
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Sulje</Button>

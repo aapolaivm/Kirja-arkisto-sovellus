@@ -63,8 +63,7 @@ const createKirja = async (req, res, next) => {
     }
     try {
         await createdNide.save();
-        await createdKirja.save();
-        console.log(createdNide.etukansikuva)
+        await createdKirja.save();        
     } catch (err) {
         const error = new HttpError(
             'Kirjan luonti epäonnistui, kokeile uudelleen!',
@@ -148,7 +147,7 @@ const deleteKirjaById = async (req, res, next) => {
 const getAllKirjat = async (req, res, next) => {
     let kirjat;
     try {
-        kirjat = await Kirja.find().lean();
+        kirjat = await Kirja.find().populate(['niteet', 'kategoria']).lean();
     } catch (err) {
         const error = new HttpError(
             'Jokin meni vikaan, kirjoja ei onnistuttu saamaan', 500
@@ -175,12 +174,26 @@ const getKirjaById = async (req, res, next) => {
     const kirjaId = req.params._id;
     let kirja;
     try {
-        kirja = await Kirja.findById(kirjaId);
+        kirja = await Kirja.findById(kirjaId).populate({
+            path: 'niteet',
+            populate: [{
+                path: 'etukansikuva',
+                select: 'nimi mimetype'
+            },{
+                path: 'takakansikuva',
+                select: 'nimi mimetype'
+            },{
+                path: 'muutkuvat',
+                select: 'nimi mimetype'
+            }]
+        }).lean()        
+        
     } catch (err) {
         const error = new HttpError(
             'Jokin meni vikaan, kirjoja ei onnistuttu saamaan', 500
 
         );
+        console.error(err)
         return next(error);
     }
     if (!kirja) {
@@ -188,8 +201,8 @@ const getKirjaById = async (req, res, next) => {
             'Kirjaa ei löytynyt kyseisellä id:llä', 404
         );
         return next(error);
-    }
-    res.json({kirja: kirja.toObject()});
+    }    
+    res.json({kirja});
 ;}
 const getKategoriat = async (req, res, next) => {
     const kategoriat = await Kategoria.find({}).lean()

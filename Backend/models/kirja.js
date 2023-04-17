@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { kuvaSchema } = require('./kuva');
+const { kuvaSchema, Kuva } = require('./kuva');
 
 const Schema = mongoose.Schema;
 
@@ -8,7 +8,7 @@ const nideSchema = new Schema({
     hankintahinta: {type: Number, required: true},
     etukansikuva: {type: Schema.Types.ObjectId, ref:'Kuva'},
     takakansikuva: {type: Schema.Types.ObjectId, ref:'Kuva'},
-    muutkuvat: [{type: Schema.Types.ObjectId, ref:'Kuva'}]
+    muutkuvat: [{type: Schema.Types.ObjectId, ref:'Kuva'}],    
 })
 const kategoriaSchema = new Schema({
     nimi: {type: String, required: true}
@@ -19,8 +19,8 @@ const kirjaSchema = new Schema({
     kirjailija: {type: String, required: true},
     julkaisuvuosi: {type: Date, required: true},
     kuvausteksti: {type: String, required: false},
-    niteet: [nideSchema],
-    kategoria: [kategoriaSchema],
+    niteet: [{type: Schema.Types.ObjectId, ref:'Nide'}],
+    kategoria: [{type: Schema.Types.ObjectId, ref:'Kategoria'}],
     kustantaja: {type: String, required: false},
     _id: {type:mongoose.Types.ObjectId}
 })

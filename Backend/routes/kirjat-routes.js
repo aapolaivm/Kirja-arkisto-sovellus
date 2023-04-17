@@ -15,20 +15,12 @@ const kuvatupload = upload.fields([{name: 'etukansikuva', maxCount: 1}, {name: '
 // router.post('/kuva', kuvatupload, function(req, res, next){
 //     console.log(req.files['etukansikuva'][0])
 // })
-router.post('/kuva', upload.array('kuva', 4), async function(req, res, next){
-    // req.file on kuva
-    console.log(req.files)
-    const kuva = new Kuva({
-        nimi: uuid.v4(),
-        data: req.file.buffer,
-        mimetype: req.file.mimetype
-    })
-    await kuva.save()
-    res.status(200)
-})
+
 router.get('/kuva/:nimi', async function (req, res, next){
-    const kuva = await Kuva.findOne({nimi: req.params.nimi})
-    console.log(kuva)
+    const kuva = await Kuva.findOne({nimi: req.params.nimi}) 
+    if (!kuva){
+        return res.status(404)
+    }   
     res.contentType(kuva.mimetype)
     res.send(Buffer.from(kuva.data, 'base64' ))
 })

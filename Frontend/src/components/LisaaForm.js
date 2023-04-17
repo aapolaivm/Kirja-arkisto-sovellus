@@ -67,7 +67,7 @@ export default function LisaaForm() {
             <CssBaseline />
             
       <Card>
-      <Box onSubmit={handleSubmit} enctype="multipart/form-data"
+      <Box onSubmit={handleSubmit}
         component="form"
         sx={{ display: '-ms-grid', transform: 'scale(1)',
           '& > :not(style)': { m: 1, width: '25ch' },
