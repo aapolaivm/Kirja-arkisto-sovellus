@@ -5,10 +5,12 @@ const mongoose = require('mongoose');
 const kirjatRoutes = require('./routes/kirjat-routes');
 const sarjatRoutes = require('./routes/sarjat-routes');
 const HttpError = require('./models/http-error');
+const cors = require('cors');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

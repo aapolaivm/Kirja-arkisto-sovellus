@@ -1,18 +1,20 @@
 const HttpError = require('../models/http-error');
 const {Sarja} = require('../models/sarja');
+const {SarjanKirja} = require('../models/sarja');
 
 const mongoose = require('mongoose');
 
 
 const createSarja = async (req, res, next) => {
-    const {nimi, ekavuosi, vikavuosi, kuvaus,} = req.body;
+    const {nimi, ekavuosi, vikavuosi, kuvaus} = req.body; 
     const newid = new mongoose.Types.ObjectId().toHexString();
     const createdSarja = new Sarja({
         nimi: nimi,
         ekavuosi: ekavuosi,
         vikavuosi: vikavuosi,
         kuvaus: kuvaus,
-        _id: newid
+        _id: newid,
+        kirjat: []
     });
     try {
         await createdSarja.save();
@@ -53,55 +55,51 @@ const getAllSarjat = async (req, res, next) => {
     res.json(sarjat);
 };
 
-/*
-const getAllsarjat = async (req, res, next) => {
-    let sarjat;
+
+const getSarjaById = async (req, res, next) => {
+    const sarjaId = req.params._id;
+    let sarja;
     try {
-        sarjat = await Sarjat.find();
+        sarja = await Sarja.findById(sarjaId);
     } catch (err) {
-        
+        const error = new HttpError(
+            'Jokin meni vikaan, sarjoja ei onnistuttu saamaan', 500
+
+        );
+        return next(error);
     }
-    console.log('GET request in sarjat');
-    res.json(TESTISARJAT);
+    if (!sarja) {
+        const error = new HttpError(
+            'Sarjaa ei löytynyt kyseisellä id:llä', 404
+        );
+        return next(error);
+    }
+    res.json({sarja: sarja.toObject()});
+;}
+
+const addKirjaSarjaan = async (req, res, next) => {
+    const {_id} = req.body;
+    try {
+        const kirja = new SarjanKirja({_id})
+        await kirja.save()
+        const sarja = await Sarja.findByIdAndUpdate(
+            _id,
+            {$push: {kirjat: kirja._id}},
+            {new: true}
+
+        ).populate('kirjat')
+    } catch (err) {
+        const error = new HttpError(
+            'Sarjan luonti epäonnistui, kokeile uudelleen!',
+            500
+        );
+        console.log(err)
+        return next(error);
+    }
 }
 
-const getSarjaById = (req, res, next) => {
-    const sarjaid = parseInt(req.params.id);
-    const sarja = TESTISARJAT.find(p => {
-        return p.id === sarjaid;
-    });
-    if (!sarja) {
-        return next(new HttpError('Sarjaa ei löytynyt', 404));
-    }
-    res.json({ sarja })
-}
-*/
 exports.createSarja = createSarja;
 exports.getAllSarjat = getAllSarjat;
-//exports.getSarjaById = getSarjaById;
+exports.getSarjaById = getSarjaById;
+exports.addKirjaSarjaan = addKirjaSarjaan;
 
-/*
-const TESTISARJAT = [
-    {
-        "id": 1,
-        "lisäyspäivä": "2023-01-01",
-        "client": "Pekka",
-        "sarjaname": "Asterix",
-        "pcs": 1
-    },
-    {
-        "id": 2,
-        "lisäyspäivä": "2023-02-01",
-        "client": "Ulla",
-        "sarjaname": "Tintti",
-        "pcs": 2
-    },
-    {
-        "id": 3,
-        "lisäyspäivä": "2023-02-22",
-        "client": "Paivi",
-        "sarjaname": "Aku Ankka",
-        "pcs": 89
-    }
-]
-*/

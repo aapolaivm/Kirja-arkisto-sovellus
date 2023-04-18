@@ -1,59 +1,87 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-const columns = [
-    {
-        field: 'kirjannimi',
-        headerName: 'Nimi',
-        width: 300,
-        editable: false
-    },
-    {
-        field: 'kirjailija',
-        headerName: 'Kirjailija',
-        width: 200,
-        editable: false,
-    },
-    {
-        field: 'jarjnro',
-        headerName: 'Järjestysnumero',
-        width: 200,
-        editable: false,
-    },
-    {
-        field: 'painovuosi',
-        headerName: 'Paivuosi',
-        width: 200,
-        editable: false
-    }
-];
+export default function DataTable({ openDialog, sarjanKirjat }) {
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 0 },
+        { field: 'nimi', headerName: 'Nimi', width: 130, flex: 1 },
+        { field: 'kategoria', headerName: 'Kategoria', width: 100, flex: 1 },
+        { field: 'kustantaja', headerName: 'Kustantaja', width: 100, flex: 1 },
+        { field: 'kirjailija', headerName: 'Kirjailija', width: 100, flex: 1 },
+        { field: 'julkaisuvuosi', headerName: 'Julkaisuvuosi', width: 50, flex: 1 },
+        {
+            field: "Edit",
+            headerName: "Action",
+            renderCell: (cellValues) => {
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={(event) => {
+                            //handleClick(event, cellValues);
+                            openDialog(cellValues.id)
+                        }}
+                    >
+                        Näytä
+                    </Button>
+                );
+            }
+        },
+        //TODO: Että poistaa vaan sarjojen kirjoista sen idn
+        {
+            field: "Delete",
+            headerName: "Action",
+            renderCell: (cellValues) => {
+                return (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={(event) => {
+                            fetch(`http://localhost:5000/api/kirjat/${cellValues.id}`, { method: 'Delete' })
+                                .then(r => r.json())
+                                .then(d => {
+                                    setFetchKirjat(numero => numero + 1)
+                                })
+                        }}
+                    >
+                        Poista
+                    </Button>
+                );
+            }
+        }
+    ];
+    const [rows, setRows] = useState([])
+    const [fetchKirjat, setFetchKirjat] = useState(0)
 
-const rows = [
-    { id: 1, kirjannimi: 'Aku Ankan taskukirjat 001', kirjailija: 'Carl Barks', jarjnro: 1, painovuosi: 1973 },
-    { id: 2, kirjannimi: 'Aku Ankan taskukirjat 002', kirjailija: 'Carl Barks', jarjnro: 2, painovuosi: 1973 },
-    { id: 3, kirjannimi: 'Aku Ankan taskukirjat 004', kirjailija: 'Carl Barks', jarjnro: 4, painovuosi: 1974 },
-    { id: 4, kirjannimi: 'Aku Ankan taskukirjat 020', kirjailija: 'Carl Barks', jarjnro: 20, painovuosi: 1978 },
-    { id: 5, kirjannimi: 'Aku Ankan taskukirjat 141', kirjailija: 'Carl Barks', jarjnro: 141, painovuosi: 2004 },
-];
+    console.log("tämä on tuotu oikeaan paikkaa", sarjanKirjat)
 
-export default function DataGridDemo() {
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/kirjat`)
+            .then(r => r.json())
+            .then(data => {
+                setRows(data.filter(item => sarjanKirjat.includes(item._id)));
+                console.log('Filtteröity data alla')
+                //console.log(filteredData);
+                //setRows(filteredData);
+            });
+    }, [sarjanKirjat]);
 
-        return (
-            <Box sx={{height: 600, width: '100%', outline: 'none' }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 20,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[20]}
-                    hideFooterSelectedRowCount
-                />
-            </Box>
-        );
-    }
+    return (
+        <div style={{ height: 475, width: '100%' }}>
+            <DataGrid
+                getRowId={row => row._id}
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                columnVisibilityModel={{
+                    id: false
+                }}
+            //checkboxSelection
+            />
+        </div>
+    );
+}

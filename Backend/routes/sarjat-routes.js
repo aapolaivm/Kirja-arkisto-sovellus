@@ -11,7 +11,8 @@ router.post('/', sarjatControllers.createSarja);
 
 router.get('/', sarjatControllers.getAllSarjat);
 
-//router.get('/:id', sarjatControllers.getSarjaById);
+router.get('/:_id', sarjatControllers.getSarjaById);
 
+router.post('/:_id/kirjat', sarjatControllers.addKirjaSarjaan);
 
 module.exports = router;
