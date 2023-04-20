@@ -7,9 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function FormDialog({
-    reFetchSarjat
-}) {
+export default function FormDialog({reFetchSarjat}) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -29,7 +27,6 @@ export default function FormDialog({
             "vikavuosi": event.target.vikavuosi.value,
             "kuvaus": event.target.kuvaus.value
         }
-
         console.log(data)
         // alert
         // eslint-disable-next-line
@@ -40,14 +37,12 @@ export default function FormDialog({
                 'Content-Type': 'application/json'
             },
         })
-
         reFetchSarjat()
-        
     }
 
     return (
         <React.Fragment>
-            <Button variant="outlined" onClick={handleClickOpen}>
+            <Button variant="contained" onClick={handleClickOpen}>
                 Lisää uusi sarja
             </Button>
             <Dialog onSubmit={handleSubmit} 

@@ -21,7 +21,7 @@ export default function DataGridDemo({fetchSarjat, getRiviId}) {
     };
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/Sarjat")
+        fetch("http://localhost:5000/api/sarjat")
             .then(r => r.json())
             .then(data => {
                 console.table(data);
