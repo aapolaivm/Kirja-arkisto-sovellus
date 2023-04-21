@@ -228,7 +228,13 @@ const addKirjaSarjaan = async (req, res, next) => {
 const getSarjanKirjat = async (req, res, next) => {
     try {
         const kirjat = await SarjanKirja.find({ sarja: req.params._id })
-        res.status(200).json({ kirjat });
+        const formattedKirjat = kirjat.map(kirja => {
+            return {
+                ...kirja.toObject(),
+                hankintapvm: moment(kirja.hankintapvm).format('DD.MM.YYYY')
+            }
+        });
+        res.status(200).json({ kirjat: formattedKirjat });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: err.message });
@@ -241,11 +247,15 @@ const getSarjanKirjatById = async (req, res, next) => {
         if (!sarjanKirja) {
             return res.status(404).json({ message: 'Book not found' });
         }
-        res.status(200).json({ sarjanKirja });
+        //console.log(sarjanKirja.hankintapvm); // log the original value
+        //sarjanKirja.hankintapvm = moment(sarjanKirja.hankintapvm, "YYYY-MM-DD").format('DD.MM.YYYY');
+        //console.log(sarjanKirja.hankintapvm); // log the transformed value
+        res.json({ sarjanKirja });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
+
 
 const deleteSarjanKirjaById = async (req, res, next) => {
     try {
@@ -263,7 +273,7 @@ const deleteSarjanKirjaById = async (req, res, next) => {
 }
 
 const updateSarjanKirjaById = async (req, res, next) => {
-    const { nimi, jarjestysnumero, ensipainosvuosi ,kuvausteksti, kirjailija, piirtajat, painos,
+    const { nimi, jarjestysnumero, ensipainosvuosi, kuvausteksti, kirjailija, piirtajat, painos,
         kuntoluokka, hankintahinta, hankintapvm } = req.body;
     const { _id } = req.params;
     try {
@@ -273,15 +283,15 @@ const updateSarjanKirjaById = async (req, res, next) => {
             return res.status(404).json({ msg: 'Kirjaa ei löytynyt' });
         }
         kirja.nimi = nimi,
-        kirja.jarjestysnumero = jarjestysnumero,
-        kirja.ensipainosvuosi = ensipainosvuosi,
-        kirja.kuvausteksti = kuvausteksti,
-        kirja.kirjailija = kirjailija, 
-        kirja.piirtajat = piirtajat,
-        kirja.painos = painos,
-        kirja.kuntoluokka = kuntoluokka,
-        kirja.hankintahinta = hankintahinta,
-        kirja.hankintapvm = hankintapvm
+            kirja.jarjestysnumero = jarjestysnumero,
+            kirja.ensipainosvuosi = ensipainosvuosi,
+            kirja.kuvausteksti = kuvausteksti,
+            kirja.kirjailija = kirjailija,
+            kirja.piirtajat = piirtajat,
+            kirja.painos = painos,
+            kirja.kuntoluokka = kuntoluokka,
+            kirja.hankintahinta = hankintahinta,
+            kirja.hankintapvm = hankintapvm
         await kirja.save();
         res.json({ msg: 'Kirjan tiedot päivitetty' });
     } catch (err) {

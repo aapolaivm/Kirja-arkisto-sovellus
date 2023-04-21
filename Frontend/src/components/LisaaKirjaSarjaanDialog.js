@@ -13,6 +13,8 @@ import 'dayjs/locale/fi';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { useState, useEffect } from 'react';
+import moment from 'moment';
+
 
 
 export default function FormDialog({ reFetchKirjat2, rowId }) {
@@ -97,7 +99,11 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
                             <DatePicker
                                 label="Hankintapäivä"
                                 value={paiva}
-                                onChange={(newpaiva) => setPaiva(newpaiva)}
+                                onChange={(newpaiva) => {
+                                    //const formattedPaiva = moment(newpaiva).format('DD.MM.YYYY');
+                                    //setPaiva(formattedPaiva);
+                                    setPaiva(newpaiva);
+                                }}
                             />
                         </DemoContainer>
                     </LocalizationProvider>
