@@ -9,6 +9,7 @@ import SarjanKirjatTaulukko from 'components/SarjanKirjatTaulukko'
 import SarjaKirjaDialog from 'components/SarjaKirjaDialog'
 import LisaaKirjaSarjaanDialog from 'components/LisaaKirjaSarjaanDialog'
 import SarjanMuokkaus from 'components/SarjanMuokkaus'
+import SarjanKirjaMuokkausDialog from 'components/SarjanKirjaMuokkausDialog'
 
 
 
@@ -23,12 +24,20 @@ const OmaKokoelma = () => {
     const [dialogOpen, setDialogOpen] = useState(false)
     const [kirjaID, setKirjaID] = useState(null)
     const [sarjanKirjat, setSarjankirjat] = useState(null)
+    const [muokkausDialogOpen, setMuokkausDialogOpen] = useState(false)
 
 
     const openDialogWithID = (id) => {
         setDialogOpen(true)
         setKirjaID(id)
     }
+
+    const openMuokkausDialogWithID = (id) => {
+        setMuokkausDialogOpen(true)
+        setKirjaID(id)
+    }
+
+
     /*
         const handleClick = () => {
             //setHidden(!hidden);
@@ -63,7 +72,7 @@ const OmaKokoelma = () => {
     }
     return (
         <div >
-            <Box sx={{display: 'flex', justifyContent: 'space-between', mt:3, mr:3}}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mr: 3 }}>
                 <UusiSarjaDialog reFetchSarjat={() => setFetchSarjat((n) => n + 1)}></UusiSarjaDialog>
                 <SarjanMuokkaus rowId={rowId} data={data} reFetchSarjat={() => setFetchSarjat((n) => n + 1)}></SarjanMuokkaus>
             </Box>
@@ -90,8 +99,15 @@ const OmaKokoelma = () => {
                     </Box>
 
                     <Box sx={{ width: 'auto', mt: 1 }}>
-                        <SarjanKirjatTaulukko openDialog={openDialogWithID} fetchKirjat2={fetchKirjat2} sarjanKirjat={sarjanKirjat} rowId={rowId} ></SarjanKirjatTaulukko>
-                        <SarjaKirjaDialog rowId={rowId} kirjaID={kirjaID} open={dialogOpen} handleClose={() => setDialogOpen(false)}></SarjaKirjaDialog>
+                        <SarjanKirjatTaulukko openDialog={openDialogWithID} openMuokkausDialog={openMuokkausDialogWithID} fetchKirjat2={fetchKirjat2} sarjanKirjat={sarjanKirjat} rowId={rowId} ></SarjanKirjatTaulukko>
+                        <SarjaKirjaDialog rowId={rowId} kirjaID={kirjaID} open={dialogOpen} handleClose={() => setDialogOpen(false)} fetchKirjat2={fetchKirjat2}></SarjaKirjaDialog>
+                        <SarjanKirjaMuokkausDialog
+                            rowId={rowId}
+                            kirjaID={kirjaID}
+                            open={muokkausDialogOpen}
+                            handleClose={() => setMuokkausDialogOpen(false)}
+                            reFetchKirjat2={() => setFetchKirjat2((n) => n + 1)}>
+                        </SarjanKirjaMuokkausDialog>
                     </Box>
 
                 </Box>

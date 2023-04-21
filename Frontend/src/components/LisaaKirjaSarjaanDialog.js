@@ -10,18 +10,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/fi';
-
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { useState, useEffect } from 'react';
-import { YearCalendar } from '@mui/x-date-pickers/YearCalendar';
 
 
 export default function FormDialog({ reFetchKirjat2, rowId }) {
     const [open, setOpen] = React.useState(false);
     const [paiva, setPaiva] = useState(null);
-    const [julkaisuvuosi, setJulkaisuvuosi] = useState(new Date())
-
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -36,23 +32,20 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
     const handleSubmit = async (event) => {
         setOpen(false);
         event.preventDefault();
-
         const data = {
             "nimi": event.target.nimi.value,
             "jarjestysnumero": event.target.jarjestysnumero.value,
             "kuvausteksti": event.target.kuvaus.value,
             "kirjailija": event.target.kirjailija.value,
+            "ensipainosvuosi": event.target.ensipainosvuosi.value,
             "piirtajat": event.target.piirtajat.value,
             "painos": event.target.painos.value,
             "kuntoluokka": event.target.kuntoluokka.value,
             "hankintahinta": event.target.hankintahinta.value,
             "hankintapvm": paiva
         }
-    
+
         //const data = new FormData(event.target)
-        //data.delete('kategoria')
-        //data.append('kategoria', event.target.kategoria.value)
-        //data.append('ensipainosvuosi', julkaisuvuosi)
 
         console.log('Data on: ', data)
         // alert 
@@ -61,15 +54,12 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
         });
         reFetchKirjat2()
     }
-    
-    const updateJulkaisuvuosi = (date) => {
-        setJulkaisuvuosi(date.year())
-    }
+
     return (
         <React.Fragment>
             <Button variant="contained" onClick={handleClickOpen}>
@@ -80,8 +70,7 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
                 onClose={handleClose}
                 component='form'
                 onSubmit={handleSubmit}
-                sx={{ m: 3 }}
-            >
+                sx={{ m: 3 }}>
                 <DialogTitle>Uusi Kirja Sarjaan</DialogTitle>
                 <DialogContent>
                     <DialogContentText>  Kirjoita alle kirjan nimi ja halutessasi myös loput tiedot ja kuvat kirjasta</DialogContentText>
@@ -99,11 +88,7 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
                     />
                     <TextField margin="normal" name="kirjailija" label="Kirjailija:" type="text" fullWidth variant="outlined" />
                     <TextField margin="normal" name="piirtajat" label="Piirtäjät:" type="text" fullWidth variant="outlined" />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoItem label="YearCalendar">
-                            <YearCalendar name='ensipainosvuosi' onChange={updateJulkaisuvuosi} />
-                        </DemoItem>
-                    </LocalizationProvider>
+                    <TextField margin="normal" name="ensipainosvuosi" label="Ensipainosvuosi:" type="number" fullWidth variant="outlined" />
                     <TextField margin="normal" name="painos" label="Painos:" type="text" fullWidth variant="outlined" />
                     <TextField margin="normal" name="kuntoluokka" label="Kuntoluokka: " type="text" fullWidth variant="outlined" />
                     <TextField margin="normal" name="hankintahinta" label="Hankintahinta:" type="number" fullWidth variant="outlined" />
@@ -161,3 +146,15 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
         </React.Fragment>
     );
 }
+
+/*
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoItem >
+                            <YearCalendar
+                                label="Ensipainosvuosi"
+                                onChange={(date) => setYear(date.getFullYear())}
+                                value={year}
+                            />
+                        </DemoItem>
+                    </LocalizationProvider>
+*/

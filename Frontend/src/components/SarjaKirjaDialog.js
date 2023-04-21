@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId }) {
+export default function AlertDialogSlide({open, handleClose, kirjaID, rowId ,fetchKirjat2}) {
 
   const [kirjaData, setKirjaData] = useState({})
 
@@ -36,10 +36,12 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId }) 
       .then(d => {
         console.log("Mitä kettua?", d)
         setKirjaData(d.sarjanKirja)
+        
       })
-  }, [kirjaID])
+  }, [kirjaID, fetchKirjat2])
 
-  console.log("Kirjadata on: ", kirjaData);
+  console.log("Kirjadata on uusi: ", kirjaData.hankintapvm);
+
 
   //TODO: Varmistaa että kaikki näkyy oikein + muuttaa datet ehkä datefieldiksi
 
@@ -98,7 +100,12 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId }) 
           Hankintapäivämäärä:
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateField', 'DateField']}>
-              <TextField format="" fullWidth label="" id="hankintapvm" value={`${kirjaData?.hankintapvm ?? 0} `} inputProps={{ readOnly: true }} />
+              <TextField
+                fullWidth 
+                label=""
+                id="hankintapvm"
+                value={`${kirjaData?.hankintapvm ?? 0} `}
+                inputProps={{ readOnly: true }} />
             </DemoContainer>
           </LocalizationProvider>
           <br></br>

@@ -4,16 +4,17 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-export default function DataTable({ openDialog, rowId, fetchKirjat2 }) {
+export default function DataTable({ openDialog, openMuokkausDialog ,rowId, fetchKirjat2 }) {
     const columns = [
         { field: 'id', headerName: 'ID', width: 0 },
         { field: 'nimi', headerName: 'Nimi', width: 130, flex: 1 },
         { field: 'jarjestysnumero', headerName: 'Järjestysnumero', width: 50, flex: 1 },
         { field: 'kirjailija', headerName: 'Kirjailija', width: 100, flex: 1 },
-        
+        { field: 'painos', headerName: 'Painos', width: 100, flex: 1 },
+        { field: 'hankintahinta', headerName: 'Hankintahinta', width: 100, flex: 1, valueFormatter: ({ value }) => `${value ?? 0} €` },
         {
             field: "Edit",
-            headerName: "Action",
+            headerName: "Lisätietoja",
             renderCell: (cellValues) => {
                 return (
                     <Button
@@ -21,7 +22,6 @@ export default function DataTable({ openDialog, rowId, fetchKirjat2 }) {
                         color="primary"
                         onClick={(event) => {
                             //handleClick(event, cellValues);
-                            console.log('What is this',cellValues.id, rowId)
                             openDialog(cellValues.id)
                         }}
                     >
@@ -31,8 +31,26 @@ export default function DataTable({ openDialog, rowId, fetchKirjat2 }) {
             }
         },
         {
+            field: "Edit2",
+            headerName: "Muokkaa",
+            renderCell: (cellValues) => {
+                return (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={(event) => {
+                            //handleClick(event, cellValues);
+                            openMuokkausDialog(cellValues.id)
+                        }}
+                    >
+                       Muokkaa
+                    </Button>
+                );
+            }
+        },
+        {
             field: "Delete",
-            headerName: "Action",
+            headerName: "Poista",
             renderCell: (cellValues) => {
                 return (
                     <Button
@@ -45,8 +63,8 @@ export default function DataTable({ openDialog, rowId, fetchKirjat2 }) {
                                     setFetchKirjat(numero => numero + 1)
                                 })
                         }}
-                    >
-                        Poista
+                    >  
+                    Poista 
                     </Button>
                 );
             }

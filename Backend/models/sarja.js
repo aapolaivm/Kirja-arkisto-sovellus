@@ -8,7 +8,7 @@ const sarjanKirjaSchema = new Schema({
     kuvausteksti: {type: String, required: false},
     kirjailija: {type: String, required: false},
     piirtajat: {type: String, required: false},
-    ensipainosvuosi: {type: Date, required: false},
+    ensipainosvuosi: {type: Number, required: false},
     painos: {type: String, required: false},
     kuntoluokka: {type: String, required: false},
     hankintahinta: {type: Number, required: false},

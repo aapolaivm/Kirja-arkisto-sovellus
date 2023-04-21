@@ -130,7 +130,7 @@ const getSarjaById = async (req, res, next) => {
 
 const deleteSarjaById = async (req, res, next) => {
     try {
-        const poistettuSarja = await Sarja.findOneAndDelete({ _id: req.params._id});
+        const poistettuSarja = await Sarja.findOneAndDelete({ _id: req.params._id });
         if (!poistettuSarja) {
             return res.status(404).json({ message: 'Series not found' });
         }
@@ -147,9 +147,9 @@ const updateSarjaById = async (req, res) => {
     const { _id } = req.params;
     try {
         const sarja = await Sarja.findById(_id);
-    
+
         if (!sarja) {
-          return res.status(404).json({ msg: 'Sarjaa ei löytynyt' });
+            return res.status(404).json({ msg: 'Sarjaa ei löytynyt' });
         }
         sarja.nimi = nimi;
         sarja.ekavuosi = ekavuosi;
@@ -157,11 +157,11 @@ const updateSarjaById = async (req, res) => {
         sarja.kuvaus = kuvaus;
         await sarja.save();
         res.json({ msg: 'Sarjan tiedot päivitetty' });
-      } catch (err) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).send('Serverivirhe');
-      }
-  }
+    }
+}
 
 //Sarjojen kirjojen controllerit
 
@@ -239,17 +239,17 @@ const getSarjanKirjatById = async (req, res, next) => {
     try {
         const sarjanKirja = await SarjanKirja.findById(req.params._id);
         if (!sarjanKirja) {
-          return res.status(404).json({ message: 'Book not found' });
+            return res.status(404).json({ message: 'Book not found' });
         }
         res.status(200).json({ sarjanKirja });
-      } catch (err) {
+    } catch (err) {
         res.status(500).json({ error: err.message });
-      }
+    }
 }
 
 const deleteSarjanKirjaById = async (req, res, next) => {
     try {
-        const poistettuKirja = await SarjanKirja.findOneAndDelete({ _id: req.params._id});
+        const poistettuKirja = await SarjanKirja.findOneAndDelete({ _id: req.params._id });
         if (!poistettuKirja) {
             // Return an error response if the book was not found
             return res.status(404).json({ message: 'Book not found in series' });
@@ -262,6 +262,33 @@ const deleteSarjanKirjaById = async (req, res, next) => {
     }
 }
 
+const updateSarjanKirjaById = async (req, res, next) => {
+    const { nimi, jarjestysnumero, ensipainosvuosi ,kuvausteksti, kirjailija, piirtajat, painos,
+        kuntoluokka, hankintahinta, hankintapvm } = req.body;
+    const { _id } = req.params;
+    try {
+        const kirja = await SarjanKirja.findById(_id);
+
+        if (!kirja) {
+            return res.status(404).json({ msg: 'Kirjaa ei löytynyt' });
+        }
+        kirja.nimi = nimi,
+        kirja.jarjestysnumero = jarjestysnumero,
+        kirja.ensipainosvuosi = ensipainosvuosi,
+        kirja.kuvausteksti = kuvausteksti,
+        kirja.kirjailija = kirjailija, 
+        kirja.piirtajat = piirtajat,
+        kirja.painos = painos,
+        kirja.kuntoluokka = kuntoluokka,
+        kirja.hankintahinta = hankintahinta,
+        kirja.hankintapvm = hankintapvm
+        await kirja.save();
+        res.json({ msg: 'Kirjan tiedot päivitetty' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Serverivirhe');
+    }
+}
 
 
 //sarjan jutut
@@ -270,13 +297,14 @@ exports.getAllSarjat = getAllSarjat;
 exports.getSarjaById = getSarjaById;
 exports.deleteSarjaById = deleteSarjaById;
 exports.updateSarjaById = updateSarjaById;
-    
 
 //sarjanKirjan jutut
 exports.addKirjaSarjaan = addKirjaSarjaan;
 exports.getSarjanKirjat = getSarjanKirjat;
 exports.getSarjanKirjatById = getSarjanKirjatById;
 exports.deleteSarjanKirjaById = deleteSarjanKirjaById;
+exports.updateSarjanKirjaById = updateSarjanKirjaById;
+
 
 
 

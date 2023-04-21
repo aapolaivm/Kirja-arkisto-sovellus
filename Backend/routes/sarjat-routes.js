@@ -33,5 +33,7 @@ router.post('/:_id/kirjat', kuvatupload, sarjatControllers.addKirjaSarjaan);
 router.get('/:_id/kirjat', sarjatControllers.getSarjanKirjat);
 router.get('/:_id/kirjat/:_id', sarjatControllers.getSarjanKirjatById);
 router.delete('/:_id/kirjat/:_id', sarjatControllers.deleteSarjanKirjaById);
+router.put('/:_id/kirjat/:_id', sarjatControllers.updateSarjanKirjaById);
+
 
 module.exports = router;
