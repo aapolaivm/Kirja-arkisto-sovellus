@@ -8,14 +8,8 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { Box } from "@mui/material";
-import dayjs from 'dayjs';
-import DialogContentText from '@mui/material/DialogContentText';
-import DeleteIcon from '@mui/icons-material/Delete';
+import moment from 'moment';
+
 
 
 
@@ -64,7 +58,8 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
             "painos": painos,
             "kuntoluokka": kuntoluokka,
             "hankintahinta": hankintahinta,
-            "hankintapvm": hankintapvm
+            "hankintapvm": moment(hankintapvm, "D.M.YYYY").toDate()
+            
         }
         const response = await fetch(apiUrl, {
             method: 'PUT',
@@ -186,15 +181,14 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
                         margin="normal"
                         type="number"
                     />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DateField']}>
-                            <TextField
-                                label="Hankintapäivämäärä"
-                                value={hankintapvm}
-                                onChange={(date) => setHankintapvm(date)}
-                            />
-                        </DemoContainer>
-                    </LocalizationProvider>
+                    <TextField
+                        fullWidth
+                        label="Hankintapäivämäärä"
+                        id="hankintapvm"
+                        value={hankintapvm}
+                        onChange={(e) => setHankintapvm(e.target.value)}
+                        margin="normal"
+                    />
                     <br></br>
                     <br></br>
                     Etukansikuva:
@@ -237,4 +231,14 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
         </React.Fragment>
     );
 }
-
+/*
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['DateField']}>
+                            <TextField
+                                label="Hankintapäivämäärä"
+                                value={hankintapvm}
+                                onChange={(date) => setHankintapvm(date)}
+                            />
+                        </DemoContainer>
+                    </LocalizationProvider>
+*/

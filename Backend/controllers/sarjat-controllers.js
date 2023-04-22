@@ -247,15 +247,15 @@ const getSarjanKirjatById = async (req, res, next) => {
         if (!sarjanKirja) {
             return res.status(404).json({ message: 'Book not found' });
         }
-        //console.log(sarjanKirja.hankintapvm); // log the original value
-        //sarjanKirja.hankintapvm = moment(sarjanKirja.hankintapvm, "YYYY-MM-DD").format('DD.MM.YYYY');
-        //console.log(sarjanKirja.hankintapvm); // log the transformed value
-        res.json({ sarjanKirja });
+        const formattedKirja = {
+            ...sarjanKirja.toObject(),
+            hankintapvm: moment(sarjanKirja.hankintapvm).format("DD.MM.YYYY"),
+          };
+        res.status(200).json({ sarjanKirja: formattedKirja });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
-
 
 const deleteSarjanKirjaById = async (req, res, next) => {
     try {

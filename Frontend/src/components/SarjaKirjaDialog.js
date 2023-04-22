@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({open, handleClose, kirjaID, rowId ,fetchKirjat2}) {
+export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, fetchKirjat2 }) {
 
   const [kirjaData, setKirjaData] = useState({})
 
@@ -34,9 +34,7 @@ export default function AlertDialogSlide({open, handleClose, kirjaID, rowId ,fet
     fetch(apiUrl)
       .then(r => r.json())
       .then(d => {
-        console.log("Mitä kettua?", d)
         setKirjaData(d.sarjanKirja)
-        
       })
   }, [kirjaID, fetchKirjat2])
 
@@ -98,16 +96,7 @@ export default function AlertDialogSlide({open, handleClose, kirjaID, rowId ,fet
           <br></br>
           <br></br>
           Hankintapäivämäärä:
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DateField', 'DateField']}>
-              <TextField
-                fullWidth 
-                label=""
-                id="hankintapvm"
-                value={`${kirjaData?.hankintapvm ?? 0} `}
-                inputProps={{ readOnly: true }} />
-            </DemoContainer>
-          </LocalizationProvider>
+          <TextField fullWidth label="" id="hankintapvm" value={`${kirjaData?.hankintapvm ?? 0} `} inputProps={{ readOnly: true }} />
           <br></br>
           <br></br>
           Etukansikuva:
