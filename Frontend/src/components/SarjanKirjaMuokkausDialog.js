@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -29,9 +30,11 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
     const [hankintahinta, setHankintahinta] = useState(null);
     const [hankintapvm, setHankintapvm] = useState(null);
     const [kirjaData, setKirjaData] = useState({})
+    const [etukansikuva, setEtukansikuva] = useState(null);
+    const [takakansikuva, setTakakansikuva] = useState(null);
+    const [muutkuvat, setMuutkuvat] = useState([]);
 
     const apiUrl = `http://localhost:5000/api/sarjat/${rowId}/kirjat/${kirjaID}`;
-    console.log(apiUrl)
     useEffect(() => { // hae data
         if (!kirjaID) {
             return
@@ -48,6 +51,7 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
         const data = {
             "nimi": nimi,
             "jarjestysnumero": jarjestysnumero,
@@ -59,11 +63,41 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
             "kuntoluokka": kuntoluokka,
             "hankintahinta": hankintahinta,
             "hankintapvm": moment(hankintapvm, "D.M.YYYY").toDate()
-            
         }
+        
+       /*
+        const data = new FormData();
+        data.append('nimi', nimi);
+        data.append('jarjestysnumero', jarjestysnumero);
+        data.append('ensipainosvuosi', ensipainosvuosi);
+        data.append('kuvausteksti', kuvaus);
+        data.append('kirjailija', kirjailija);
+        data.append('piirtajat', piirtajat);
+        data.append('painos', painos);
+        data.append('kuntoluokka', kuntoluokka);
+        data.append('hankintahinta', hankintahinta);
+        data.append('hankintapvm', moment(hankintapvm, "D.M.YYYY").toDate());
+*/
+/*
+        if (etukansikuva) {
+            data.append("etukansikuva", etukansikuva);
+        }
+
+        if (takakansikuva) {
+            data.append("takakansikuva", takakansikuva);
+        }
+        if (muutkuvat) {
+            for (let i = 0; i < muutkuvat.length; i++) {
+                data.append("muutkuvat", muutkuvat[i]);
+            }
+        }
+        */
+        console.log('etukuva', etukansikuva)
+        console.log('Lähetetty data', data)
         const response = await fetch(apiUrl, {
             method: 'PUT',
             headers: {
+                //'enctype': 'multipart/form-data'
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
@@ -83,6 +117,9 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
         setKuntoluokka(kirjaData.kuntoluokka);
         setHankintahinta(kirjaData.hankintahinta);
         setHankintapvm(kirjaData.hankintapvm);
+        setEtukansikuva(kirjaData.etukansikuva);
+        setTakakansikuva(kirjaData.takakansikuva);
+        setMuutkuvat(kirjaData.muutkuvat);
     }, [kirjaData]);
 
     return (
@@ -190,21 +227,42 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
                         margin="normal"
                     />
                     <br></br>
-                    <br></br>
                     Etukansikuva:
                     <br></br>
-                    <img
-                        style={{ maxWidth: 200, margin: 15 }}
-                        src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.etukansikuva?.nimi}`}
-                        alt="image"
+                    {kirjaData?.etukansikuva?.nimi ? (
+                        <img
+                            style={{ maxWidth: 200, margin: 15 }}
+                            src={`http://localhost:5000/api/sarjat/kuva/${kirjaData?.etukansikuva?.nimi}`}
+                            alt="image"
+                        />
+                    ) : (
+                        <div>Ei kuvaa</div>
+                    )}
+
+                    <TextField
+                        type="file"
+                        label=""
+                        onChange={(e) => setEtukansikuva(e.target.files[0])}
+                        margin="normal"
                     />
+
                     <br></br>
                     Takakansikuva:
                     <br></br>
-                    <img
-                        style={{ maxWidth: 200, margin: 15 }}
-                        src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.takakansikuva?.nimi}`}
-                        alt="image"
+                    {kirjaData?.takakansikuva?.nimi ? (
+                        <img
+                            style={{ maxWidth: 200, margin: 15 }}
+                            src={`http://localhost:5000/api/sarjat/kuva/${kirjaData?.takakansikuva?.nimi}`}
+                            alt="image"
+                        />
+                    ) : (
+                        <div>Ei kuvaa</div>
+                    )}
+                    <TextField
+                        type="file"
+                        label=""
+                        onChange={(e) => console.log('textfield kuva', e.target.files[0])}
+                        margin="normal"
                     />
                     <br></br>
                     Muut kuvat:
@@ -215,13 +273,21 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
                                 <img
                                     key={k.nimi}
                                     style={{ maxWidth: 200, margin: 15 }}
-                                    src={`http://localhost:5000/api/kirjat/kuva/${k.nimi}`}
+                                    src={`http://localhost:5000/api/sarjat/kuva/${k.nimi}`}
                                     alt="image"
                                 />
                             )
-                    })
+                        })
                     }
-
+                    <TextField
+                        type="file"
+                        label=""
+                        onChange={(e) => setMuutkuvat(e.target.files)}
+                        margin="normal"
+                        InputProps={{
+                            multiple: true,
+                        }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button variant='outlined' onClick={handleClose}>Peruuta</Button>
@@ -231,6 +297,11 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, re
         </React.Fragment>
     );
 }
+
+/** 
+ *  
+ */
+
 /*
 <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DateField']}>

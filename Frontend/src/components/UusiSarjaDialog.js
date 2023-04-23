@@ -27,7 +27,6 @@ export default function FormDialog({reFetchSarjat}) {
             "vikavuosi": event.target.vikavuosi.value,
             "kuvaus": event.target.kuvaus.value
         }
-        console.log(data)
         // alert
         // eslint-disable-next-line
         const result = await fetch("http://localhost:5000/api/sarjat", {

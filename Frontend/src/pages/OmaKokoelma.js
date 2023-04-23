@@ -65,7 +65,6 @@ const OmaKokoelma = () => {
                 }
             });
     }, [rowId]);
-    console.log('Data on:', data);
 
     if (!data) {
         return <div>Loading...</div>;

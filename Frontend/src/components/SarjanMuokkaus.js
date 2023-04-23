@@ -19,9 +19,6 @@ export default function FormDialog({ reFetchSarjat, rowId, data }) {
     const [kuvaus, setKuvaus] = useState('');
     const [ekavuosi, setEkavuosi] = useState('');
     const [vikavuosi, setVikavuosi] = useState('');
-    console.log('Data täällä on', data)
-    console.log('Nimi on', nimi)
-
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,7 +58,7 @@ export default function FormDialog({ reFetchSarjat, rowId, data }) {
                 method: 'DELETE',
             });
             const data = await response.json();
-            console.log(data); // handle response data here
+            console.log('poistettu', data); // handle response data here
             reFetchSarjat();
             handleClose();
         } catch (error) {

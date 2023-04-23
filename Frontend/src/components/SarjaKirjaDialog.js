@@ -25,7 +25,6 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, fe
   const [kirjaData, setKirjaData] = useState({})
 
   const apiUrl = `http://localhost:5000/api/sarjat/${rowId}/kirjat/${kirjaID}`;
-  console.log(apiUrl)
 
   useEffect(() => { // hae data
     if (!kirjaID) {
@@ -37,11 +36,6 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, fe
         setKirjaData(d.sarjanKirja)
       })
   }, [kirjaID, fetchKirjat2])
-
-  console.log("Kirjadata on uusi: ", kirjaData.hankintapvm);
-
-
-  //TODO: Varmistaa että kaikki näkyy oikein + muuttaa datet ehkä datefieldiksi
 
   return (
     <div>
@@ -101,19 +95,27 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, fe
           <br></br>
           Etukansikuva:
           <br></br>
-          <img
-            style={{ maxWidth: 200, margin: 15 }}
-            src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.etukansikuva?.nimi}`}
-            alt="image"
-          />
+          {kirjaData?.etukansikuva?.nimi ? (
+            <img
+              style={{ maxWidth: 200, margin: 15 }}
+              src={`http://localhost:5000/api/sarjat/kuva/${kirjaData?.etukansikuva?.nimi}`}
+              alt="image"
+            />
+          ) : (
+            <div>Ei kuvaa</div>
+          )}
           <br></br>
           Takakansikuva:
           <br></br>
-          <img
-            style={{ maxWidth: 200, margin: 15 }}
-            src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.takakansikuva?.nimi}`}
-            alt="image"
-          />
+          {kirjaData?.takakansikuva?.nimi ? (
+            <img
+              style={{ maxWidth: 200, margin: 15 }}
+              src={`http://localhost:5000/api/sarjat/kuva/${kirjaData?.takakansikuva?.nimi}`}
+              alt="image"
+            />
+          ) : (
+            <div>Ei kuvaa</div>
+          )}
           <br></br>
           Muut kuvat:
           <br></br>
@@ -123,7 +125,7 @@ export default function AlertDialogSlide({ open, handleClose, kirjaID, rowId, fe
                 <img
                   key={k.nimi}
                   style={{ maxWidth: 200, margin: 15 }}
-                  src={`http://localhost:5000/api/kirjat/kuva/${k.nimi}`}
+                  src={`http://localhost:5000/api/sarjat/kuva/${k.nimi}`}
                   alt="image"
                 />
               )

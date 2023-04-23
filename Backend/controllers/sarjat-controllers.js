@@ -50,7 +50,6 @@ const createKirjaSarjaan = async (req, res, next) => {
         hankintapvm: hankintapvm,
         _id: newid
     });
-    /*
     if (req.files['etukansikuva']) {
         const etukansikuva = await createKuva(req.files['etukansikuva'][0])
         createdKirja.etukansikuva = etukansikuva
@@ -64,7 +63,6 @@ const createKirjaSarjaan = async (req, res, next) => {
         const muutkuvat = req.files['muutkuvat'].map(kuva => createKuva(kuva))
         createdKirja.muutkuvat = await Promise.all(muutkuvat)
     }
-    */
     try {
         await createdKirja.save();
     } catch (err) {
@@ -186,8 +184,8 @@ const addKirjaSarjaan = async (req, res, next) => {
         if (!sarja) {
             return res.status(404).json({ message: 'Sarjaa ei löytynyt' })
         }
-        //const { nimi, jarjestysnumero, kuvausteksti, kirjailija, piirtajat, ensipainosvuosi,
-        //    painos, kuntoluokka, hankintahinta, hankintapvm } = req.body;
+        const { nimi, jarjestysnumero, kuvausteksti, kirjailija, piirtajat, ensipainosvuosi,
+           painos, kuntoluokka, hankintahinta, hankintapvm } = req.body;
         const newid = new mongoose.Types.ObjectId().toHexString();
         const kirja = new SarjanKirja({
             nimi: req.body.nimi,
@@ -202,8 +200,7 @@ const addKirjaSarjaan = async (req, res, next) => {
             hankintapvm: req.body.hankintapvm,
             sarja: sarja._id,
             _id: newid
-        });
-        /*
+        });        
         if (req.files['etukansikuva']) {
             const etukansikuva = await createKuva(req.files['etukansikuva'][0])
             kirja.etukansikuva = etukansikuva
@@ -217,7 +214,6 @@ const addKirjaSarjaan = async (req, res, next) => {
             const muutkuvat = req.files['muutkuvat'].map(kuva => createKuva(kuva))
             kirja.muutkuvat = await Promise.all(muutkuvat)
         }
-        */
         await kirja.save();
         res.status(200).json({ message: 'Book added to series successfully' });
     } catch (err) {
@@ -242,13 +238,19 @@ const getSarjanKirjat = async (req, res, next) => {
 }
 
 const getSarjanKirjatById = async (req, res, next) => {
+    //TODO: kuvien lataus
+    const kirjaId = req.params._id;
+    let sarjanKirja;
     try {
-        const sarjanKirja = await SarjanKirja.findById(req.params._id);
+        sarjanKirja = await SarjanKirja.findById(kirjaId)
+            .populate('etukansikuva takakansikuva muutkuvat', 'nimi mimetype')
+            .lean();
+
         if (!sarjanKirja) {
             return res.status(404).json({ message: 'Book not found' });
         }
         const formattedKirja = {
-            ...sarjanKirja.toObject(),
+            ...sarjanKirja,
             hankintapvm: moment(sarjanKirja.hankintapvm).format("DD.MM.YYYY"),
           };
         res.status(200).json({ sarjanKirja: formattedKirja });
@@ -278,7 +280,6 @@ const updateSarjanKirjaById = async (req, res, next) => {
     const { _id } = req.params;
     try {
         const kirja = await SarjanKirja.findById(_id);
-
         if (!kirja) {
             return res.status(404).json({ msg: 'Kirjaa ei löytynyt' });
         }
@@ -292,6 +293,21 @@ const updateSarjanKirjaById = async (req, res, next) => {
             kirja.kuntoluokka = kuntoluokka,
             kirja.hankintahinta = hankintahinta,
             kirja.hankintapvm = hankintapvm
+/*
+        if (req.files['etukansikuva']) {
+            const etukansikuva = await createKuva(req.files['etukansikuva'][0])
+            kirja.etukansikuva = etukansikuva
+        }
+        if (req.files['takakansikuva']) {
+            const takakansikuva = await createKuva(req.files['takakansikuva'][0])
+            kirja.takakansikuva = takakansikuva
+        }
+        if (req.files['muutkuvat']) {
+            // array of promises
+            const muutkuvat = req.files['muutkuvat'].map(kuva => createKuva(kuva))
+            kirja.muutkuvat = await Promise.all(muutkuvat)
+        }
+        */
         await kirja.save();
         res.json({ msg: 'Kirjan tiedot päivitetty' });
     } catch (err) {

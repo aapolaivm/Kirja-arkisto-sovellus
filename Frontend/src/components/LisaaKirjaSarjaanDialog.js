@@ -13,7 +13,6 @@ import 'dayjs/locale/fi';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 
 
 
@@ -34,6 +33,7 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
     const handleSubmit = async (event) => {
         setOpen(false);
         event.preventDefault();
+        /*
         const data = {
             "nimi": event.target.nimi.value,
             "jarjestysnumero": event.target.jarjestysnumero.value,
@@ -46,18 +46,19 @@ export default function FormDialog({ reFetchKirjat2, rowId }) {
             "hankintahinta": event.target.hankintahinta.value,
             "hankintapvm": paiva
         }
+*/
+        //TODO: tähän kuvat toimivaksi
+        const data = new FormData(event.target)
 
-        //const data = new FormData(event.target)
-
-        console.log('Data on: ', data)
         // alert 
 
         const result = await fetch(`http://localhost:5000/api/sarjat/${rowId}/kirjat`, {
             method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            // body: JSON.stringify(data),
+            body: data,
+            // headers: {
+            //  'Content-Type': 'application/json',
+            //},
         });
         reFetchKirjat2()
     }
