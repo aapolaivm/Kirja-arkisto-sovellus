@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function AlertDialogSlide({open, handleClose, kirjaID}) {
 
-  const [kirjaData, setKirjaData] = useState({})
+  const [kirjaData, setKirjaData] = useState(null)
 
   useEffect(()=> { // hae data
     if (!kirjaID){
@@ -32,7 +32,7 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
 
   return (
     <div>
-      <Dialog
+      {kirjaData && <Dialog
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -66,7 +66,9 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       Kuntoluokka
       <TextField fullWidth label="" id="Kuntoluokka" value={`${kirjaData?.niteet?.[0]?.kunto??0}`} inputProps={{readOnly:true}} />
       <br></br>
-      <br></br>
+      
+      {kirjaData?.niteet?.[0]?.etukansikuva && <>
+        <br></br>
       Etukansikuva
       <br></br>
       <img
@@ -74,6 +76,10 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.niteet?.[0]?.etukansikuva?.nimi}`}
       alt="image"
     />
+    </>
+    }
+    {kirjaData?.niteet?.[0]?.takakansikuva &&
+    <>
     <br></br>
     Takakansikuva
     <br></br>
@@ -82,11 +88,12 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.niteet?.[0]?.takakansikuva?.nimi}`}
       alt="image"
     />
+    </>}
     <br></br>
     Muut kuvat
     <br></br>
-    {      
-      (kirjaData?.niteet?.[0]?.muutkuvat??[]).map(k => {
+    {
+      kirjaData?.niteet?.[0]?.muutkuvat && (kirjaData?.niteet?.[0]?.muutkuvat??[]).map(k => {
         return (
       <img
       key={k.nimi}
@@ -101,7 +108,7 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
         <DialogActions>
           <Button onClick={handleClose}>Sulje</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog>}
     </div>
   );
 }

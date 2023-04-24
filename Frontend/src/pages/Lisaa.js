@@ -8,7 +8,7 @@ const Lisaa = () => {
     return (
         <div>
             
-            <h1>Lisaa/Muokkaa</h1>
+            
             <LisaaForm></LisaaForm>
         </div>
     );

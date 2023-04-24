@@ -57,7 +57,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        Kirja-arkisto
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -96,7 +96,7 @@ function ResponsiveAppBar() {
                             <Typography component={Link} to="/Arkisto" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Arkisto</Typography>
                         </MenuItem>
                         <MenuItem onClick={handleCloseNavMenu}>
-                            <Typography component={Link} to="/Lisaa" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Lisää/Muokkaa</Typography>
+                            <Typography component={Link} to="/Lisaa" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Lisää</Typography>
                         </MenuItem>
                         <MenuItem onClick={handleCloseNavMenu}>
                             <Typography component={Link} to="/OmaKokoelma" style={{textDecoration: 'none'}} color="inherit" underline='none' textAlign="center">Oma kirjasto</Typography>
@@ -120,7 +120,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        Kirja-arkisto
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button
@@ -145,7 +145,7 @@ function ResponsiveAppBar() {
                                 to="/Lisaa"
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                Lisää/Muokkaa
+                                Lisää
                         </Button>
                         <Button
                                 onClick={handleCloseNavMenu}
