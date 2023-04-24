@@ -1,10 +1,16 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Alert from '@mui/material/Alert';
 
-export default function DataTable({ openDialog, openMuokkausDialog ,rowId, fetchKirjat2 }) {
+
+export default function DataTable({ openDialog, openMuokkausDialog, rowId, fetchKirjat2 }) {
+
+
+    const [rows, setRows] = useState([])
+    const [fetchKirjat, setFetchKirjat] = useState(0)
     const columns = [
         { field: 'id', headerName: 'ID', width: 0 },
         { field: 'nimi', headerName: 'Nimi', width: 130, flex: 1 },
@@ -43,7 +49,7 @@ export default function DataTable({ openDialog, openMuokkausDialog ,rowId, fetch
                             openMuokkausDialog(cellValues.id)
                         }}
                     >
-                       Muokkaa
+                        Muokkaa
                     </Button>
                 );
             }
@@ -63,38 +69,46 @@ export default function DataTable({ openDialog, openMuokkausDialog ,rowId, fetch
                                     setFetchKirjat(numero => numero + 1)
                                 })
                         }}
-                    >  
-                    Poista 
+                    >
+                        Poista
                     </Button>
                 );
             }
         }
     ];
 
-    const [rows, setRows] = useState([])
-    const [fetchKirjat, setFetchKirjat] = useState(0)
 
     //hakee sarjojen idn perusteella backendistä kaikki sarjaan kuuluvat kirjat
     useEffect(() => {
         fetch(`http://localhost:5000/api/sarjat/${rowId}/kirjat`)
             .then(r => r.json())
             .then(data => {
-                setRows(data.kirjat);
-                });
+                try {
+                    setRows(data.kirjat);
+                } catch (error) {
+                    setRows([]);
+                }
+            });
     }, [rowId, fetchKirjat, fetchKirjat2]);
 
     return (
         <div style={{ height: 475, width: '100%' }}>
-            <DataGrid
-                getRowId={row => row._id}
-                rows={rows}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                columnVisibilityModel={{
-                    id: false
-                }}
-            />
+            {rows && columns && rows.length === 0 ?
+                <Box sx={{width: 200, mt:2}}>
+                    <Alert severity="info">Lisää kirjoja sarjaan!</Alert>
+                </Box>
+                :
+                <DataGrid
+                    getRowId={row => row._id}
+                    rows={rows}
+                    columns={columns}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                    columnVisibilityModel={{
+                        id: false
+                    }}
+                />
+            }
         </div>
     );
 }

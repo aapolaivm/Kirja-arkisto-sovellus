@@ -10,22 +10,20 @@ import SarjaKirjaDialog from 'components/SarjaKirjaDialog'
 import LisaaKirjaSarjaanDialog from 'components/LisaaKirjaSarjaanDialog'
 import SarjanMuokkaus from 'components/SarjanMuokkaus'
 import SarjanKirjaMuokkausDialog from 'components/SarjanKirjaMuokkausDialog'
+import Alert from '@mui/material/Alert';
+
 
 
 
 const OmaKokoelma = () => {
-    //const esiData = JSON.parse('{"sarja":{"_id":"6436c57fa1daeac7eb0c07b8","nimi":"","ekavuosi":null,"vikavuosi":null,"kuvaus":""}}');
-    //console.log("esidata",esiData);
     const [data, setData] = useState(null)
     const [fetchSarjat, setFetchSarjat] = useState(0)
     const [fetchKirjat2, setFetchKirjat2] = useState(0)
-    //TODO: Tämän korjaus joskus
-    const [rowId, setRowId] = useState('6436c57fa1daeac7eb0c07b8');
+    const [rowId, setRowId] = useState('');
     const [dialogOpen, setDialogOpen] = useState(false)
     const [kirjaID, setKirjaID] = useState(null)
     const [sarjanKirjat, setSarjankirjat] = useState(null)
     const [muokkausDialogOpen, setMuokkausDialogOpen] = useState(false)
-
 
     const openDialogWithID = (id) => {
         setDialogOpen(true)
@@ -36,15 +34,6 @@ const OmaKokoelma = () => {
         setMuokkausDialogOpen(true)
         setKirjaID(id)
     }
-
-
-    /*
-        const handleClick = () => {
-            //setHidden(!hidden);
-            addBooksToSeries(books, rowId);
-        };
-    */
-    //<Button onClick={handleClick}>Hide Box</Button>
 
     const getRiviId = (riviId) => {
         setRowId(riviId);
@@ -59,7 +48,7 @@ const OmaKokoelma = () => {
                 setData(data)
                 console.table(data)
                 try {
-                    setSarjankirjat(data.sarja.kirjat);
+                    setSarjankirjat(data?.sarja?.kirjat);
                 } catch (error) {
                     setSarjankirjat([]);
                 }
@@ -81,37 +70,47 @@ const OmaKokoelma = () => {
                     <SarjatTaulukko fetchSarjat={fetchSarjat} getRiviId={getRiviId} ></SarjatTaulukko>
                 </Box>
 
-                <Box sx={{ display: 'flex', flexFlow: "column", flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
-                    <Box
-                        sx={{ display: 'flex', border: 1, borderColor: 'grey.300', borderRadius: 1, bgcolor: 'background.default', p: 2 }}
-                    >
-                        <div>
-                            <Typography mt={1} variant="h3">{data.sarja?.nimi}</Typography>
-                            <Typography mt={3} variant="body1"> ilmestymisvuodet: {data.sarja?.ekavuosi} - {data.sarja?.vikavuosi}</Typography>
-                            <Typography mt={2} variant="subtitle1">Kuvaus: </Typography>
-                            <Typography mt={0} variant="body1">{data.sarja?.kuvaus}</Typography>
-                        </div>
+                {rowId === '' ?
+                    <Box sx={{ p:3 }}>
+                        <Alert severity="info">Valitse tai lisää uusi sarja</Alert>
                     </Box>
+                    :
 
-                    <Box sx={{ width: 1, mt: 2 }}>
-                        <LisaaKirjaSarjaanDialog rowId={rowId} reFetchKirjat2={() => setFetchKirjat2((n) => n + 1)}></LisaaKirjaSarjaanDialog>
+                    <Box sx={{ display: 'flex', flexFlow: "column", flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
+
+                        <Box
+                            sx={{ display: 'flex', border: 1, borderColor: 'grey.300', borderRadius: 1, bgcolor: 'background.default', p: 2 }}
+                        >
+                            <div>
+                                <Typography mt={1} variant="h3">{data.sarja?.nimi}</Typography>
+                                <Typography mt={3} variant="body1"> ilmestymisvuodet: {data.sarja?.ekavuosi} - {data.sarja?.vikavuosi}</Typography>
+                                <Typography mt={2} variant="subtitle1">Kuvaus: </Typography>
+                                <Typography mt={0} variant="body1">{data.sarja?.kuvaus}</Typography>
+                            </div>
+                        </Box>
+
+                        <Box sx={{ width: 1, mt: 2 }}>
+                            <LisaaKirjaSarjaanDialog rowId={rowId} reFetchKirjat2={() => setFetchKirjat2((n) => n + 1)}></LisaaKirjaSarjaanDialog>
+                        </Box>
+
+                        <Box sx={{ width: 'auto', mt: 1 }}>
+                            <SarjanKirjatTaulukko openDialog={openDialogWithID} openMuokkausDialog={openMuokkausDialogWithID} fetchKirjat2={fetchKirjat2} sarjanKirjat={sarjanKirjat} rowId={rowId} ></SarjanKirjatTaulukko>
+                            <SarjaKirjaDialog rowId={rowId} kirjaID={kirjaID} open={dialogOpen} handleClose={() => setDialogOpen(false)} fetchKirjat2={fetchKirjat2}></SarjaKirjaDialog>
+                            <SarjanKirjaMuokkausDialog
+                                rowId={rowId}
+                                kirjaID={kirjaID}
+                                open={muokkausDialogOpen}
+                                handleClose={() => setMuokkausDialogOpen(false)}
+                                reFetchKirjat2={() => setFetchKirjat2((n) => n + 1)}>
+                            </SarjanKirjaMuokkausDialog>
+                        </Box>
+
+
                     </Box>
-
-                    <Box sx={{ width: 'auto', mt: 1 }}>
-                        <SarjanKirjatTaulukko openDialog={openDialogWithID} openMuokkausDialog={openMuokkausDialogWithID} fetchKirjat2={fetchKirjat2} sarjanKirjat={sarjanKirjat} rowId={rowId} ></SarjanKirjatTaulukko>
-                        <SarjaKirjaDialog rowId={rowId} kirjaID={kirjaID} open={dialogOpen} handleClose={() => setDialogOpen(false)} fetchKirjat2={fetchKirjat2}></SarjaKirjaDialog>
-                        <SarjanKirjaMuokkausDialog
-                            rowId={rowId}
-                            kirjaID={kirjaID}
-                            open={muokkausDialogOpen}
-                            handleClose={() => setMuokkausDialogOpen(false)}
-                            reFetchKirjat2={() => setFetchKirjat2((n) => n + 1)}>
-                        </SarjanKirjaMuokkausDialog>
-                    </Box>
-
-                </Box>
+                }
 
             </Box>
+
         </div>
     );
 };

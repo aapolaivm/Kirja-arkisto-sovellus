@@ -67,10 +67,10 @@ export default function FormDialog({ reFetchSarjat, rowId, data }) {
     }
 
     useEffect(() => {
-        setNimi(data.sarja.nimi);
-        setKuvaus(data.sarja.kuvaus);
-        setEkavuosi(data.sarja.ekavuosi);
-        setVikavuosi(data.sarja.vikavuosi);
+        setNimi(data?.sarja?.nimi);
+        setKuvaus(data?.sarja?.kuvaus);
+        setEkavuosi(data?.sarja?.ekavuosi);
+        setVikavuosi(data?.sarja?.vikavuosi);
     }, [data]);
 
     return (
