@@ -14,10 +14,20 @@ import Etusivu from "pages/Etusivu";
 import Lisaa from "pages/Lisaa";
 import SignUp from "pages/Register";
 import OmaKokoelma from "pages/OmaKokoelma";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { blue, red } from '@mui/material/colors';
 
+const darkTheme = createTheme({
+    palette: {
+        primary: blue,
+        secondary: red,
+      },      
+  });
+  
 const App = () => {
     return (
         <div>
+             <ThemeProvider theme={darkTheme}>       
             <NavBar></NavBar>
             <CssBaseline />
             <Container>
@@ -29,7 +39,8 @@ const App = () => {
                 <Route path="/Lisaa" element={<Lisaa />} ></Route>
                 <Route path="/OmaKokoelma" element={<OmaKokoelma/>} ></Route>
             </Routes>
-            </Container>
+            </Container>            
+            </ThemeProvider> 
         </div>
     );
 };
