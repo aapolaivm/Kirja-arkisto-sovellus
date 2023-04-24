@@ -1,4 +1,6 @@
-import * as React from "react";
+import React, {useState} from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,14 +15,28 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme();
 
 const SignUp = () =>  {
-  const handleSubmit = (event) => {
+  
+  const navigate = useNavigate();
+  const [username,setUsername] = useState("");
+  const [password,setPassword] = useState("");
+  
+
+  const handleSubmit = async(event) =>{
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
+    try{
+      const response = await axios.post("http://localhost:5000/api/register", {username , password});
+      console.log(response.data);
+      navigate("/Login");
+    }
+    catch(error){
+      console.log(error);
+      alert("käyttäjänimi on jo käytössä");
+
+    }
+  }
+
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -55,6 +71,8 @@ const SignUp = () =>  {
                 label="Username"
                 name="username"
                 autoComplete="username"
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -67,6 +85,8 @@ const SignUp = () =>  {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </Grid>
             <Button

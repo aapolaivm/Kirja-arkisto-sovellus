@@ -2,10 +2,13 @@ const express = require('express');
 const bodyParser  = require('body-parser');
 const mongoose = require('mongoose');
 
+const loginRoutes = require("./routes/login-routes");
+const registerRoutes = require("./routes/register-routes");
 const kirjatRoutes = require('./routes/kirjat-routes');
 const sarjatRoutes = require('./routes/sarjat-routes');
 const HttpError = require('./models/http-error');
 const cors = require('cors');
+
 
 const app = express();
 
@@ -24,6 +27,8 @@ app.use((req,res,next) => {
 //Midlleware
 app.use('/api/kirjat',kirjatRoutes);
 app.use('/api/sarjat',sarjatRoutes);
+app.use("/api/register", registerRoutes);
+app.use("/api/login", loginRoutes);
 
 app.use((req, res, next) => {
     const error = new HttpError('Ei löytynyt routtia');

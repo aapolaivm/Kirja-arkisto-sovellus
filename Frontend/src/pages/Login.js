@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,14 +11,37 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 
 const theme = createTheme();
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleButtonClick = () => {};
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+
+    try{
+      const response = await axios.post("http://localhost:5000/api/login", {username, password});
+      console.log(response.data);
+      if(response.data == "väärä käyttäjätunnus tai salasana"){
+        alert("väärä käyttäjätunnus tai salasana")
+        
+      }
+      else{
+      
+      navigate("/");
+      }
+    }
+    catch(error){
+      console.log(error)
+      alert("kirjautuminen epäonnistui")
+    }
+    
+  };
 
  
 
@@ -41,7 +64,7 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Kirjaudu
           </Typography>
-          <Box component="form" /*onSubmit={}*/ noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -51,6 +74,8 @@ const Login = () => {
               name="username"
               autoComplete="username"
               autoFocus
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
               margin="normal"
@@ -61,6 +86,8 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
             />
 
             <Button
