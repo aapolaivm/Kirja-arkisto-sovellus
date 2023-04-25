@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser  = require('body-parser');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const loginRoutes = require("./routes/login-routes");
@@ -8,6 +8,7 @@ const kirjatRoutes = require('./routes/kirjat-routes');
 const sarjatRoutes = require('./routes/sarjat-routes');
 const HttpError = require('./models/http-error');
 const cors = require('cors');
+require('dotenv').config();
 
 
 const app = express();
@@ -15,18 +16,18 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use((req,res,next) => {
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
     next();
 });
 
 
 //Midlleware
-app.use('/api/kirjat',kirjatRoutes);
-app.use('/api/sarjat',sarjatRoutes);
+app.use('/api/kirjat', kirjatRoutes);
+app.use('/api/sarjat', sarjatRoutes);
 app.use("/api/register", registerRoutes);
 app.use("/api/login", loginRoutes);
 
@@ -40,12 +41,21 @@ app.use((error, req, res, next) => {
         return next(error);
     }
     res.status(error.code || 500);
-    res.json({message:error.message || 'Unknown error'});
+    res.json({ message: error.message || 'Unknown error' });
 });
 
 //Kannan yhdistäminen 
+
+
+const username = "mongouser";
+const password = "Bb0yrh1lrmkfBfNq";
+const cluster = "cluster0.tgxjloc";
+const dbname = "KirjaDB";
+
+const uri = process.env.ATLAS_URI;
+
 mongoose
-    .connect('mongodb+srv://mongouser:Bb0yrh1lrmkfBfNq@cluster0.tgxjloc.mongodb.net/KirjaDB?retryWrites=true&w=majority')
+    .connect(uri)
     .then(() => {
         app.listen(5000);
     })
