@@ -120,7 +120,7 @@ const deleteKirjaById = async (req, res, next) => {
         kirja = await Kirja.findById(kirjaId);
     } catch (err) {
         const error = new HttpError(
-            'Kirjan poistaminen epäonnistui', 500
+            'Kirjan poistaminen epäonnistui', 404
         );
         return next(error);
     }
@@ -129,7 +129,7 @@ const deleteKirjaById = async (req, res, next) => {
             await kirja.remove();
         } catch (err) {
             const error = new HttpError(
-                'Kirjan poistaminen epänonnistui', 500
+                'Kirjan poistaminen epänonnistui', 404
             );
             return next(error);
         }

@@ -15,6 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState, useEffect } from 'react';
 import { Form, Navigate } from 'react-router-dom';
 import KategoriaSelect from './Kategoriaselect';
+import { width } from '@mui/system';
 
 
 export default function LisaaForm() {
@@ -66,6 +67,7 @@ export default function LisaaForm() {
   const updateJulkaisuvuosi = (date) => {
     setJulkaisuvuosi(date.year())
   }
+  
 
     return (
         <React.Fragment>
@@ -75,7 +77,7 @@ export default function LisaaForm() {
       
       <Box onSubmit={handleSubmit}
         component="form"
-        sx={{ display: 'flex', justifyContent: 'center', mt: 3, gap: {xs: 5, md: 30}
+        sx={{ display: 'flex', justifyContent: 'center', mt: 20, gap: {xs: 5, md: 30}
         }}
         noValidate
         autoComplete="off"
@@ -96,22 +98,24 @@ export default function LisaaForm() {
         <Grid xs={6} sx={{mt: 2}}><TextField id="outlined-basic" fullWidth name='kunto' label="Kunto" variant="outlined" /></Grid>
         
         </Grid>
-
+        <Box sx={{border: 1}}>
         <Paper
           elevation={12}
           style={{
-               
+            width: 'auto',               
             border: "1px solid black",
             
-  }}
-        ><LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoItem label="Julkaisuvuosi">
-            <YearCalendar name='julkaisuvuosi' onChange={updateJulkaisuvuosi} />       
+  }}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoItem>
+            <YearCalendar name='julkaisuvuosi' onChange={updateJulkaisuvuosi} />
+            <br></br>
+            <p style={{textAlign:'center'}}>Julkaisuvuosi</p>   
           </DemoItem>          
-        </LocalizationProvider></Paper>
+        </LocalizationProvider></Paper></Box>
 
         
-        <Box sx={{display: 'flex', flexDirection: 'column'}}>
+        <Box sx={{display: 'flex', flexDirection: 'column', border: 1}}>
         <Grid xs={6}><TextField
         type="text"
         id="outlined-basic"
@@ -120,11 +124,11 @@ export default function LisaaForm() {
         name='kuvausteksti'
         inputProps={{
           style: {
-            height: "100px"
+            height: "100px",
+            width: "500px"
           }
         }}
-      /></Grid>
-      
+      /></Grid>      
       <Button sx={{mt: 3}} startIcon={<UploadFileIcon/>}
   variant="contained"
   component="label"
@@ -137,6 +141,7 @@ export default function LisaaForm() {
     name='etukansikuva'
   />
 </Button>
+
 <br></br>
 <Button startIcon={<UploadFileIcon/>}
   variant="contained"
