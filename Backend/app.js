@@ -46,12 +46,6 @@ app.use((error, req, res, next) => {
 
 //Kannan yhdistäminen 
 
-
-const username = "mongouser";
-const password = "Bb0yrh1lrmkfBfNq";
-const cluster = "cluster0.tgxjloc";
-const dbname = "KirjaDB";
-
 const uri = process.env.ATLAS_URI;
 
 mongoose
