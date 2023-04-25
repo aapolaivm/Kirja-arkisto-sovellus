@@ -7,7 +7,7 @@ export default function SimpleContainer(props) {
     <React.Fragment>
       
       <Container maxWidth="none">
-        <Box sx={{ height: '50vh' }} >{props.children}</Box>
+        <Box sx={{ minHeight: '80vh' }} >{props.children}</Box>
       </Container>
     </React.Fragment>
   );

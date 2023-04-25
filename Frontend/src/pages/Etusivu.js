@@ -4,6 +4,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { useState, useEffect } from 'react';
 import { typography } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 
 export default function Etusivu() {
@@ -17,15 +19,37 @@ export default function Etusivu() {
       setData(data);
     })
   }, [fetchKirjat])
-  
-  if(!data) {
+
+  if (!data) {
     return <p>Loading...</p>
   }
 
+  const theme = createTheme();
+
+  /**
+   * '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
+   */
+
+  theme.typography.h3 = {
+    fontSize: '1.2rem',
+    '@media (min-width:600px)': {
+      fontSize: '1.5rem',
+    },
+  };
+
   return (
     <div>
-      <Typography variant="h4" align="center" gutterBottom>
-        Tervetuloa krja-arkistoon!
+      <Typography variant="h4" align="center" gutterBottom margin={4}>
+        Tervetuloa kirja-arkistoon!
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
@@ -39,22 +63,22 @@ export default function Etusivu() {
                   <CardActionArea>
                     {book.niteet[0] === undefined ?
                       <CardMedia
-                       component="img"
-                       alt={'Ei kuvaa'}
-                       height="250"
-                       image={`https://p1.pxfuel.com/preview/866/743/752/book-literature-encyclopedia.jpg`}
-                       title={'Kuvaa ei saatavilla'}
-                     />
-                    
-                    :
-                    <CardMedia
-                      component="img"
-                      alt={book.nimi}
-                      height="250"
-                      image={`http://localhost:5000/api/kirjat/kuva/${book?.niteet?.[0]?.etukansikuva?.nimi}`}
-                      title={book.nimi}
-                    />
-                  }
+                        component="img"
+                        alt={'Ei kuvaa'}
+                        height="250"
+                        image={`https://p1.pxfuel.com/preview/866/743/752/book-literature-encyclopedia.jpg`}
+                        title={'Kuvaa ei saatavilla'}
+                      />
+
+                      :
+                      <CardMedia
+                        component="img"
+                        alt={book.nimi}
+                        height="250"
+                        image={`http://localhost:5000/api/kirjat/kuva/${book?.niteet?.[0]?.etukansikuva?.nimi}`}
+                        title={book.nimi}
+                      />
+                    }
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h2">
                         {book.nimi}

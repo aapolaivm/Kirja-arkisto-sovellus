@@ -17,32 +17,33 @@ import OmaKokoelma from "pages/OmaKokoelma";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { blue, red } from '@mui/material/colors';
 import Footteri from 'components/Footteri'
+import { Box } from "@mui/material";
 
 const darkTheme = createTheme({
     palette: {
         primary: blue,
         secondary: red,
-      },      
-  });
-  
+    },
+});
+
 const App = () => {
     return (
         <div>
-             <ThemeProvider theme={darkTheme}>       
-            <NavBar></NavBar>
-            <CssBaseline />
-            <Container>
-                <Routes>
-                <Route path="/Login" element={<Login/>}/>
-                { <Route path="/Register" element={<SignUp/>}/> }
-                <Route exact path="/" element={<Etusivu />} />
-                <Route path="/Arkisto" element={<Arkisto />} />
-                <Route path="/Lisaa" element={<Lisaa />} ></Route>
-                <Route path="/OmaKokoelma" element={<OmaKokoelma/>} ></Route>
-            </Routes>
-            </Container>        
-            <Footteri></Footteri>    
-            </ThemeProvider> 
+            <ThemeProvider theme={darkTheme}>
+                <NavBar></NavBar>
+                <CssBaseline />
+                <Container>
+                    <Routes>
+                        <Route path="/Login" element={<Login />} />
+                        {<Route path="/Register" element={<SignUp />} />}
+                        <Route exact path="/" element={<Etusivu />} />
+                        <Route path="/Arkisto" element={<Arkisto />} />
+                        <Route path="/Lisaa" element={<Lisaa />} ></Route>
+                        <Route path="/OmaKokoelma" element={<OmaKokoelma />} ></Route>
+                    </Routes>
+                </Container>
+                <Footteri></Footteri>
+            </ThemeProvider>
         </div>
     );
 };

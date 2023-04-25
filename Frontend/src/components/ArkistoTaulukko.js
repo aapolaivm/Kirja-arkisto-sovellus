@@ -72,7 +72,7 @@ export default function DataTable({openDialog}) {
     })   
     },[fetchKirjat])
   return (
-    <div style={{ height: 1000, width: '100%' }}>
+    <div style={{ height: 600, width: '100%' }}>
       <DataGrid
       getRowId={row=>row._id}
         rows={rows}
