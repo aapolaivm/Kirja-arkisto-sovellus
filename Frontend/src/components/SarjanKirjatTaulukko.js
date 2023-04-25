@@ -92,7 +92,7 @@ export default function DataTable({ openDialog, openMuokkausDialog, rowId, fetch
     }, [rowId, fetchKirjat, fetchKirjat2]);
 
     return (
-        <div style={{ height: 475, width: '100%' }}>
+        <div style={{ height: 425, width: '100%' }}>
             {rows && columns && rows.length === 0 ?
                 <Box sx={{width: 200, mt:2}}>
                     <Alert severity="info">Lisää kirjoja sarjaan!</Alert>

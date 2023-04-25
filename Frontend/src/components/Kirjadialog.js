@@ -9,6 +9,7 @@ import Slide from '@mui/material/Slide';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Typography } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -76,6 +77,9 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.niteet?.[0]?.etukansikuva?.nimi}`}
       alt="image"
     />
+    <Typography>
+      {kirjaData?.niteet?.[0]?.etukansikuva?.nimi}
+    </Typography>
     </>
     }
     {kirjaData?.niteet?.[0]?.takakansikuva &&

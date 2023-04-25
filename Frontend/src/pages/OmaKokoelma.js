@@ -60,13 +60,13 @@ const OmaKokoelma = () => {
     }
     return (
         <div >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mr: 3 }}>
+            <Box sx={{ display: 'flex', gap:2,  mt: 3, mr: 3 }}>
                 <UusiSarjaDialog reFetchSarjat={() => setFetchSarjat((n) => n + 1)}></UusiSarjaDialog>
                 <SarjanMuokkaus rowId={rowId} data={data} reFetchSarjat={() => setFetchSarjat((n) => n + 1)}></SarjanMuokkaus>
             </Box>
 
             <Box sx={{ display: 'flex' }}>
-                <Box sx={{ height: 750, bgcolor: 'background.default', mt: 3, width: 300 }}>
+                <Box sx={{ height: 700, bgcolor: 'background.default', mt: 3, width: 300 }}>
                     <SarjatTaulukko fetchSarjat={fetchSarjat} getRiviId={getRiviId} ></SarjatTaulukko>
                 </Box>
 
