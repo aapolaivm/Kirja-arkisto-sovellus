@@ -23,9 +23,10 @@ const darkTheme = createTheme({
     palette: {
         primary: blue,
         secondary: red,
-    },
-});
-
+        mode: 'dark'
+      },      
+  });
+  
 const App = () => {
     return (
         <div>

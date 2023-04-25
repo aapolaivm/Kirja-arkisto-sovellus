@@ -31,7 +31,7 @@ app.use("/api/register", registerRoutes);
 app.use("/api/login", loginRoutes);
 
 app.use((req, res, next) => {
-    const error = new HttpError('Ei löytynyt routtia');
+    const error = new HttpError('Ei löytynyt routtia', 404);
     throw error;
 });
 
@@ -52,5 +52,7 @@ mongoose
     .catch(err => {
         console.log(err)
     });
+
+module.exports = app;
 
 
