@@ -147,7 +147,22 @@ const deleteKirjaById = async (req, res, next) => {
 const getAllKirjat = async (req, res, next) => {
     let kirjat;
     try {
-        kirjat = await Kirja.find().populate(['niteet', 'kategoria']).lean();
+        kirjat = await Kirja
+        .find()
+        .populate(['niteet', 'kategoria', {
+            path: 'niteet',
+            populate: [{
+                path: 'etukansikuva',
+                select: 'nimi mimetype'
+            },{
+                path: 'takakansikuva',
+                select: 'nimi mimetype'
+            },{
+                path: 'muutkuvat',
+                select: 'nimi mimetype'
+            }]
+        }])
+        .lean();
     } catch (err) {
         const error = new HttpError(
             'Jokin meni vikaan, kirjoja ei onnistuttu saamaan', 500
@@ -174,7 +189,9 @@ const getKirjaById = async (req, res, next) => {
     const kirjaId = req.params._id;
     let kirja;
     try {
-        kirja = await Kirja.findById(kirjaId).populate({
+        kirja = await Kirja
+        .findById(kirjaId)
+        .populate({
             path: 'niteet',
             populate: [{
                 path: 'etukansikuva',
@@ -186,7 +203,8 @@ const getKirjaById = async (req, res, next) => {
                 path: 'muutkuvat',
                 select: 'nimi mimetype'
             }]
-        }).lean()        
+        })
+        .lean()        
         
     } catch (err) {
         const error = new HttpError(
