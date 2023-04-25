@@ -77,9 +77,6 @@ export default function AlertDialogSlide({open, handleClose, kirjaID}) {
       src={`http://localhost:5000/api/kirjat/kuva/${kirjaData?.niteet?.[0]?.etukansikuva?.nimi}`}
       alt="image"
     />
-    <Typography>
-      {kirjaData?.niteet?.[0]?.etukansikuva?.nimi}
-    </Typography>
     </>
     }
     {kirjaData?.niteet?.[0]?.takakansikuva &&

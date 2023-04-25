@@ -16,6 +16,7 @@ export default function Etusivu() {
   useEffect(() => {
     fetch("http://localhost:5000/api/kirjat").then(r => r.json()).then(data => {
       console.table(data);
+      console.log("käännetty",data.reverse().slice(0,3))
       setData(data);
     })
   }, [fetchKirjat])
@@ -23,28 +24,6 @@ export default function Etusivu() {
   if (!data) {
     return <p>Loading...</p>
   }
-
-  const theme = createTheme();
-
-  /**
-   * '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"'
-   */
-
-  theme.typography.h3 = {
-    fontSize: '1.2rem',
-    '@media (min-width:600px)': {
-      fontSize: '1.5rem',
-    },
-  };
 
   return (
     <div>
@@ -57,7 +36,7 @@ export default function Etusivu() {
             Uusimmat kirjat
           </Typography>
           <ImageList cols={4} gap={10}>
-            {data.map((book) => (
+            {data.reverse().slice(0,12).map((book) => (
               <ImageListItem key={book._id}>
                 <Card>
                   <CardActionArea>
